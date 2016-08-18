@@ -1,5 +1,6 @@
 package tictactoe;
 
+import tictactoe.listeners.MenuListener;
 import tictactoe.listeners.TicTacToeGameController;
 import tictactoe.model.BoardState;
 
@@ -14,7 +15,7 @@ import java.util.ListIterator;
 import static java.util.Arrays.asList;
 import static tictactoe.GameLogic.NUMBER_OF_BUTTONS;
 
-public class TicTacToeFrame implements ActionListener {
+public class TicTacToeFrame {
     
     final String VERSION = "3.0";
 
@@ -111,20 +112,8 @@ public class TicTacToeFrame implements ActionListener {
         txtMessage.setBackground(new Color(mainColorR - 30, mainColorG - 30, mainColorB - 30));
         txtMessage.setForeground(Color.white);
         txtMessage.setEditable(false);
-
-        //Adding Action Listener to all the Buttons and Menu Items
-        mnuNewGame.addActionListener(this);
-        mnuExit.addActionListener(this);
-        mnuInstruction.addActionListener(this);
-        mnuAbout.addActionListener(this);
-        btn1v1.addActionListener(this);
-        btn1vCPU.addActionListener(this);
-        btnQuit.addActionListener(this);
-        btnSetName.addActionListener(this);
-        btnContinue.addActionListener(this);
-        btnTryAgain.addActionListener(this);
-
-        //Setting up the playing field
+        
+        setupGameMenu();
         setupGameBoard();
 
         //Adding everything needed to pnlMenu and pnlMain
@@ -138,7 +127,23 @@ public class TicTacToeFrame implements ActionListener {
         window.add(pnlMain, BorderLayout.CENTER);
         window.setVisible(true);
     }
-    
+
+    private void setupGameMenu() {
+        //Adding Action Listener to all the Buttons and Menu Items
+        ActionListener menuListener = new MenuListener(this);
+
+        mnuNewGame.addActionListener(menuListener);
+        mnuExit.addActionListener(menuListener);
+        mnuInstruction.addActionListener(menuListener);
+        mnuAbout.addActionListener(menuListener);
+        btn1v1.addActionListener(menuListener);
+        btn1vCPU.addActionListener(menuListener);
+        btnQuit.addActionListener(menuListener);
+        btnSetName.addActionListener(menuListener);
+        btnContinue.addActionListener(menuListener);
+        btnTryAgain.addActionListener(menuListener);
+    }
+
     public int getPosition(JButton jButton) {
         return Arrays.asList(buttonsOfTableBoard).indexOf(jButton);
     }
@@ -274,67 +279,6 @@ public class TicTacToeFrame implements ActionListener {
 		-------------------------------------
 */
 
-    //-------------------ACTION PERFORMED METHOD (Button Click --> Action?)-------------------------//
-    @Override
-    public void actionPerformed(ActionEvent click)	{
-        Object source = click.getSource();
-
-        if(source == mnuNewGame || source == mnuInstruction || source == mnuAbout)	{
-            clearPanelSouth();
-            setDefaultLayout();
-
-            if(source == mnuNewGame)	{//NewGame
-                pnlTop.add(pnlNewGame);
-            }
-            else if(source == mnuInstruction || source == mnuAbout)	{
-                if(source == mnuInstruction)	{// Instructions
-                    message = 	"Instructions:\n\n" +
-                            "Your goal is to be the first player to get 3 X's or O's in a\n" +
-                            "row. (horizontally, diagonally, or vertically)\n" +
-                            player1Name + ": X\n" +
-                            player2Name + ": O\n";
-                } else	{//About
-                    message = 	"About:\n\n" +
-                            "Title: Tic-Tac-Toe\n" +
-                            "Creator: Blmaster\n" +
-                            "Version: " + VERSION + "\n";
-                }
-                txtMessage.setText(message);
-                pnlTop.add(txtMessage);
-            }
-            pnlMain.add(pnlTop);
-        }
-        else if(source == btn1v1 || source == btn1vCPU)	{
-            if(inGame)	{
-                startNewGameWhileGameRunning();
-            } else	{
-                startNewGame(source);
-            }
-        }
-        else if(source == btnContinue)	{
-//            checkTurn();
-            showGame();
-        }
-        else if(source == btnSetName)	{
-            askUserForPlayerNames();
-        }
-        else if(source == mnuExit)	{
-            option = askMessage("Are you sure you want to exit?", "Exit Game", JOptionPane.YES_NO_OPTION);
-            if(option == JOptionPane.YES_OPTION)
-                System.exit(0);
-        }
-        else if(source == btnTryAgain)	{
-            newGame();
-            btnTryAgain.setEnabled(false);
-        }
-        else if(source == btnQuit)	{
-            quit();
-        }
-
-        pnlMain.setVisible(false);
-        pnlMain.setVisible(true);
-    }
-
     private void startNewGame(Object source) {
         btnContinue.setEnabled(true);
         if(source == btn1v1)	{// 1 v 1 Game
@@ -387,6 +331,66 @@ public class TicTacToeFrame implements ActionListener {
         buttonsOfTableBoard[winningCombination[0]].setBackground(clrBtnWonColor);
         buttonsOfTableBoard[winningCombination[1]].setBackground(clrBtnWonColor);
         buttonsOfTableBoard[winningCombination[2]].setBackground(clrBtnWonColor);
+    }
+
+    public boolean isNewGamePushed(Object source) {
+        return isMenuItemEqualToSource(mnuNewGame, source);
+    }
+
+    public boolean isMenuInstructionPushed(Object source) {
+        return isMenuItemEqualToSource(mnuInstruction, source);
+    }
+
+    public boolean isMenuAboutPushed(Object source) {
+        return isMenuItemEqualToSource(mnuAbout, source);
+    }
+    
+    private boolean isMenuItemEqualToSource(JMenuItem jMenuItem, Object source) {
+        return jMenuItem == source;
+    }
+
+    public void addNewGamePanelToTopPanel() {
+        pnlTop.add(pnlNewGame);
+    }
+
+    public void displayInstructionPopup() {
+        message = 	"Instructions:\n\n" +
+                "Your goal is to be the first player to get 3 X's or O's in a\n" +
+                "row. (horizontally, diagonally, or vertically)\n" +
+                player1Name + ": X\n" +
+                player2Name + ": O\n";
+
+        setTextMessageAndShowOnPanelTop();
+    }
+
+    public void displayAboutPopup() {
+        message = 	"About:\n\n" +
+                "Title: Tic-Tac-Toe\n" +
+                "Creator: Blmaster\n" +
+                "Version: " + VERSION + "\n";
+        
+        setTextMessageAndShowOnPanelTop();
+    }
+
+    private void setTextMessageAndShowOnPanelTop() {
+        txtMessage.setText(message);
+        pnlTop.add(txtMessage);
+    }
+
+    public void addTopPanelToMainPanel() {
+        pnlMain.add(pnlTop);
+    }
+
+    /**
+     * see setVisible in Swing
+     */
+    public void resetMainPanelVisibility() {
+        pnlMain.setVisible(false);
+        pnlMain.setVisible(true);
+    }
+
+    public boolean isGameHumanVsHuman(Object source) {
+        return source == btn1v1;
     }
 //-------------------END OF ACTION PERFORMED METHOD-------------------------//
 }
