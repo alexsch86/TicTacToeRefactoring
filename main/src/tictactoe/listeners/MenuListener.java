@@ -9,6 +9,8 @@ public class MenuListener implements ActionListener {
     
     private TicTacToeFrame ticTacToeFrame;
 
+    private boolean inGame;
+    
     public MenuListener(TicTacToeFrame ticTacToeFrame) {
         this.ticTacToeFrame = ticTacToeFrame;
     }
@@ -23,8 +25,7 @@ public class MenuListener implements ActionListener {
 
             if(ticTacToeFrame.isNewGamePushed(source))	{
                 ticTacToeFrame.addNewGamePanelToTopPanel();
-            }
-            else {
+            } else {
                 if(ticTacToeFrame.isMenuInstructionPushed(source))	{
                     ticTacToeFrame.displayInstructionPopup();
                     
@@ -34,13 +35,13 @@ public class MenuListener implements ActionListener {
             }
             ticTacToeFrame.addTopPanelToMainPanel();
         }
-//        else if(ticTacToeFrame.isGameHumanVsHuman() || source == btn1vCPU)	{
-//            if(inGame)	{
-//                ticTacToeFrame.startNewGameWhileGameRunning();
-//            } else	{
-//                startNewGame(source);
-//            }
-//        }
+        else if(ticTacToeFrame.isGameHumanVsHuman(source) || ticTacToeFrame.isGameHumanVersusComputer(source))	{
+            if(inGame)	{
+                inGame = ticTacToeFrame.startNewGameWhileGameRunning();
+            } else	{
+                ticTacToeFrame.startNewGame(source);
+            }
+        }
 //        else if(source == btnContinue)	{
 ////            checkTurn();
 //            showGame();

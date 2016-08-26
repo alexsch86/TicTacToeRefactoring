@@ -63,9 +63,7 @@ public class TicTacToeFrame {
             player1Name = "Player 1", player2Name = "Player 2",
             tempPlayer2 = "Player 2";
     private boolean CPUGame;
-    private boolean inGame;
-
-
+    
     public TicTacToeFrame() {    //Setting game properties and layout and sytle...
 
         //Setting window properties:
@@ -279,7 +277,7 @@ public class TicTacToeFrame {
 		-------------------------------------
 */
 
-    private void startNewGame(Object source) {
+    public void startNewGame(Object source) {
         btnContinue.setEnabled(true);
         if(source == btn1v1)	{// 1 v 1 Game
             player2Name = tempPlayer2;
@@ -287,25 +285,24 @@ public class TicTacToeFrame {
             winCounterPlayer2 = 0;
             lblMode.setText("1 v 1");
             CPUGame = false;
-            newGame();
         } else	{// 1 v tictactoe.CPU Game
             player2Name = "Computer";
             winCounterPlayer1 = 0;
             winCounterPlayer2 = 0;
             lblMode.setText("1 v tictactoe.CPU");
             CPUGame = true;
-            newGame();
         }
+        newGame();
     }
 
-    private void startNewGameWhileGameRunning() {
+    public boolean startNewGameWhileGameRunning() {
         option = askMessage("If you start a new game," +
                         "your current game will be lost..." + "\n" +
                         "Are you sure you want to continue?",
                 "Quit Game?" , JOptionPane.YES_NO_OPTION
         );
-        if(option == JOptionPane.YES_OPTION)
-            inGame = false;
+        
+        return option == JOptionPane.YES_OPTION;
     }
 
     public void refreshTableBoard(BoardState boardState) {
@@ -391,6 +388,10 @@ public class TicTacToeFrame {
 
     public boolean isGameHumanVsHuman(Object source) {
         return source == btn1v1;
+    }
+
+    public boolean isGameHumanVersusComputer(Object source) {
+        return source == btn1vCPU;
     }
 //-------------------END OF ACTION PERFORMED METHOD-------------------------//
 }
