@@ -5,20 +5,41 @@ import tictactoe.model.TableCharacter;
 
 public class GameLogic {
     
-    public static final int NUMBER_OF_BUTTONS = 9;
+    static final int NUMBER_OF_BUTTONS = 9;
     
     public static final int NOT_A_WINING_COMBINATION = -1;
-    public static final int NOT_A_POSITION = -1;
+    private static final int NOT_A_POSITION = -1;
+    private static GameLogic gameLogic;
+
+    private BoardState boardState;
+
+    private boolean inGame;
+    private boolean win;
+    private int winningCombinationIndex;
     private int turn;
 
-    private boolean inGame, win;
-    private final BoardState boardState;
-    private int winningCombinationIndex;
-
-    public GameLogic() {
+    private GameLogic() {
+    }
+    
+    public static GameLogic gameLogicInstance() {
+        if(gameLogic == null) {
+            gameLogic = new GameLogic();
+        }
+        return gameLogic;
+    }
+    
+    public void initGameLogicData() {
         turn = 1;
         winningCombinationIndex = NOT_A_WINING_COMBINATION;
         boardState = new BoardState();
+    }
+
+    public boolean isInGame() {
+        return inGame;
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
     }
 
     public BoardState getBoardState() {
@@ -49,7 +70,6 @@ public class GameLogic {
             }
             // check win
             checkGameIsOver();
-            
         }
     }
 
@@ -105,6 +125,8 @@ public class GameLogic {
 //        lblTurn.setText("Turn: " + whoTurn);
     }
 
+
+
     public int getWiningCombinationIfExisting() {
         for(int i=0; i < 8; i++)	{   
             if(boardState.isCombinationForWinSituation(i)) {
@@ -113,8 +135,6 @@ public class GameLogic {
         }
         return NOT_A_WINING_COMBINATION;
     }
-
-    
 
     private void doRandomMove()	{
         int randomPosition = 0;
@@ -131,5 +151,4 @@ public class GameLogic {
     private boolean isAvailableCell(int randomPosition) {
         return boardState.getStateAtPosition(randomPosition) == TableCharacter.EMPTY;
     }
-
 }

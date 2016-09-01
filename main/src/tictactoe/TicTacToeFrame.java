@@ -1,12 +1,11 @@
 package tictactoe;
 
-import tictactoe.listeners.MenuListener;
+import tictactoe.listeners.MenuController;
 import tictactoe.listeners.TicTacToeGameController;
 import tictactoe.model.BoardState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
@@ -53,11 +52,12 @@ public class TicTacToeFrame {
     final int X = 535, Y = 342,
             mainColorR = 190, mainColorG = 50, mainColorB = 50,
             btnColorR = 70, btnColorG = 70, btnColorB = 70;
-    Color clrBtnWonColor = new Color(190, 190, 190);
-    int
-            winCounterPlayer1 = 0, winCounterPlayer2 = 0,
-            wonNumber1 = 1, wonNumber2 = 1, wonNumber3 = 1,
-            option;
+    
+    private Color clrBtnWonColor = new Color(190, 190, 190);
+    
+    private int winCounterPlayer1 = 0;
+    private int winCounterPlayer2 = 0;
+    private int option;
     
     String message,
             player1Name = "Player 1", player2Name = "Player 2",
@@ -128,7 +128,7 @@ public class TicTacToeFrame {
 
     private void setupGameMenu() {
         //Adding Action Listener to all the Buttons and Menu Items
-        ActionListener menuListener = new MenuListener(this);
+        ActionListener menuListener = new MenuController(this);
 
         mnuNewGame.addActionListener(menuListener);
         mnuExit.addActionListener(menuListener);
@@ -176,21 +176,17 @@ public class TicTacToeFrame {
 //        checkTurn();
         checkWinStatus();
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------
+    
     private void newGame()	{	//	Sets all the game required variables to default
-        //	and then shows the playing field.
-        //	(Basically: Starts a new 1v1 Game)
-        buttonsOfTableBoard[wonNumber1].setBackground(new Color(btnColorR, btnColorG, btnColorB));
-        buttonsOfTableBoard[wonNumber2].setBackground(new Color(btnColorR, btnColorG, btnColorB));
-        buttonsOfTableBoard[wonNumber3].setBackground(new Color(btnColorR, btnColorG, btnColorB));
         for(int i = 0; i < NUMBER_OF_BUTTONS; i++)	{
+            buttonsOfTableBoard[i].setBackground(new Color(btnColorR, btnColorG, btnColorB));
             buttonsOfTableBoard[i].setText("");
             buttonsOfTableBoard[i].setEnabled(true);
         }
 //        win = false;
         showGame();
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------
+    
     private void quit()	{
         lblMode.setText("");
         btnContinue.setEnabled(false);

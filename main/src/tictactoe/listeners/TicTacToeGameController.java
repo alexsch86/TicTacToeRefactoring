@@ -7,17 +7,18 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static tictactoe.GameLogic.gameLogicInstance;
 import static tictactoe.model.TableCharacter.X;
 import static tictactoe.model.TableCharacter.ZERO;
 
 public class TicTacToeGameController implements ActionListener {
 
     private final TicTacToeFrame ticTacToeFrame;
-    private GameLogic gameLogic;
+    private GameLogic gameLogic = gameLogicInstance();
 
     public TicTacToeGameController(TicTacToeFrame ticTacToeFrame) {
         this.ticTacToeFrame = ticTacToeFrame;
-        gameLogic = new GameLogic();
+        gameLogic.initGameLogicData();
     }
 
     @Override

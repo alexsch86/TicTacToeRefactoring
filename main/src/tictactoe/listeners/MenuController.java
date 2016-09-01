@@ -1,17 +1,19 @@
 package tictactoe.listeners;
 
+import tictactoe.GameLogic;
 import tictactoe.TicTacToeFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuListener implements ActionListener {
+import static tictactoe.GameLogic.gameLogicInstance;
+
+public class MenuController implements ActionListener {
     
     private TicTacToeFrame ticTacToeFrame;
+    private GameLogic gameLogic = gameLogicInstance();
 
-    private boolean inGame;
-    
-    public MenuListener(TicTacToeFrame ticTacToeFrame) {
+    public MenuController(TicTacToeFrame ticTacToeFrame) {
         this.ticTacToeFrame = ticTacToeFrame;
     }
 
@@ -36,8 +38,8 @@ public class MenuListener implements ActionListener {
             ticTacToeFrame.addTopPanelToMainPanel();
         }
         else if(ticTacToeFrame.isGameHumanVsHuman(source) || ticTacToeFrame.isGameHumanVersusComputer(source))	{
-            if(inGame)	{
-                inGame = ticTacToeFrame.startNewGameWhileGameRunning();
+            if(gameLogic.isInGame())	{
+                gameLogic.setInGame(ticTacToeFrame.startNewGameWhileGameRunning());
             } else	{
                 ticTacToeFrame.startNewGame(source);
             }
