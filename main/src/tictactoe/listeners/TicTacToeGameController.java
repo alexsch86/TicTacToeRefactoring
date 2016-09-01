@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static tictactoe.GameLogic.NOT_A_WINING_COMBINATION;
 import static tictactoe.GameLogic.gameLogicInstance;
 import static tictactoe.model.TableCharacter.X;
 import static tictactoe.model.TableCharacter.ZERO;
@@ -39,17 +40,15 @@ public class TicTacToeGameController implements ActionListener {
             if(gameLogic.isWin()) {
                 ticTacToeFrame.markWinningPositionAndEnd(gameLogic.getWinningCombination());
             }
-            
-            int winingCombinationIfExisting = this.gameLogic.getWiningCombinationIfExisting();
-            if(winingCombinationIfExisting == GameLogic.NOT_A_WINING_COMBINATION && isCPUGame()) {
-                this.gameLogic.doAI();
-                this.ticTacToeFrame.refreshTableBoard(gameLogic.getBoardState());
+
+            if(gameLogic.isCPUGame()) {
+                if (gameLogic.isNotAWinningCombination()) {
+                    this.gameLogic.doAI();
+                    this.ticTacToeFrame.refreshTableBoard(gameLogic.getBoardState());
+                }
             }
         }
     }
 
-    private boolean isCPUGame() {
-        return ticTacToeFrame.isCPUGame();
-    }
-
+    
 }

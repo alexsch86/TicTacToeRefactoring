@@ -3,6 +3,7 @@ package tictactoe;
 import tictactoe.listeners.MenuController;
 import tictactoe.listeners.TicTacToeGameController;
 import tictactoe.model.BoardState;
+import tictactoe.model.GameType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,8 @@ import java.util.ListIterator;
 
 import static java.util.Arrays.asList;
 import static tictactoe.GameLogic.NUMBER_OF_BUTTONS;
+import static tictactoe.model.GameType.PLAYER_VS_CPU;
+import static tictactoe.model.GameType.PLAYER_VS_PLAYER;
 
 public class TicTacToeFrame {
     
@@ -62,7 +65,6 @@ public class TicTacToeFrame {
     String message,
             player1Name = "Player 1", player2Name = "Player 2",
             tempPlayer2 = "Player 2";
-    private boolean CPUGame;
     
     public TicTacToeFrame() {    //Setting game properties and layout and sytle...
 
@@ -160,7 +162,7 @@ public class TicTacToeFrame {
         }
     }
 
-    private void showGame()	{	//	Shows the Playing Field
+    private void doLayout()	{	//	Shows the Playing Field
         //	*IMPORTANT*- Does not start out brand new (meaning just shows what it had before)
         clearPanelSouth();
         pnlMain.setLayout(new BorderLayout());
@@ -173,18 +175,18 @@ public class TicTacToeFrame {
         pnlMain.add(pnlTop, BorderLayout.CENTER);
         pnlMain.add(pnlBottom, BorderLayout.SOUTH);
         pnlPlayingField.requestFocus();
-//        checkTurn();
-        checkWinStatus();
+//        checkTurn();        
     }
     
-    private void newGame()	{	//	Sets all the game required variables to default
+    private void resetBoard()	{	//	Sets all the game required variables to default
         for(int i = 0; i < NUMBER_OF_BUTTONS; i++)	{
             buttonsOfTableBoard[i].setBackground(new Color(btnColorR, btnColorG, btnColorB));
             buttonsOfTableBoard[i].setText("");
             buttonsOfTableBoard[i].setEnabled(true);
         }
 //        win = false;
-        showGame();
+        doLayout();
+        displayWinStatus();
     }
     
     private void quit()	{
@@ -239,22 +241,22 @@ public class TicTacToeFrame {
         pnlBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
     }
     //-----------------------------------------------------------------------------------------------------------------------------------
-    public void checkWinStatus()	{
+    private void displayWinStatus()	{
         lblStatus.setText(player1Name + ": " + winCounterPlayer1 + " | " + player2Name + ": " + winCounterPlayer2);
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------
-    public int askMessage(String msg, String tle, int op)	{
+    
+    private int askMessage(String msg, String tle, int op)	{
         return JOptionPane.showConfirmDialog(null, msg, tle, op);
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------
-    public String getInput(String msg, String setText)	{
+    
+    private String getInput(String msg, String setText)	{
         return JOptionPane.showInputDialog(null, msg, setText);
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------
-    public void showMessage(String msg)	{
+    
+    private void showMessage(String msg)	{
         JOptionPane.showMessageDialog(null, msg);
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------
+    
     public void clearPanelSouth()	{	//Removes all the possible panels
         //that pnlMain, pnlTop, pnlBottom
         //could have.
@@ -267,28 +269,29 @@ public class TicTacToeFrame {
         pnlBottom.remove(lblTurn);
         pnlBottom.remove(pnlQuitNTryAgain);
     }
-/*
-		-------------------------------------
-		End of all non-Abstract METHODS.		|
-		-------------------------------------
-*/
-
-    public void startNewGame(Object source) {
+    
+    public void startNewGame(GameType gameType) {
         btnContinue.setEnabled(true);
-        if(source == btn1v1)	{// 1 v 1 Game
+        if(gameType == PLAYER_VS_PLAYER)	{
             player2Name = tempPlayer2;
-            winCounterPlayer1 = 0;
-            winCounterPlayer2 = 0;
-            lblMode.setText("1 v 1");
-            CPUGame = false;
-        } else	{// 1 v tictactoe.CPU Game
+            lblMode.setText(gameType.name());
+        } else	{
             player2Name = "Computer";
-            winCounterPlayer1 = 0;
-            winCounterPlayer2 = 0;
-            lblMode.setText("1 v tictactoe.CPU");
-            CPUGame = true;
+            lblMode.setText(gameType.name());
         }
-        newGame();
+        
+        winCounterPlayer1 = 0;
+        winCounterPlayer2 = 0;
+        
+        resetBoard();
+    }
+
+    public GameType getTypeOfGame(Object source) {
+        if(source == btn1v1) {
+            return PLAYER_VS_PLAYER;
+        } else {
+            return PLAYER_VS_CPU;
+        }
     }
 
     public boolean startNewGameWhileGameRunning() {
@@ -316,10 +319,6 @@ public class TicTacToeFrame {
         }
     }
 
-    public boolean isCPUGame() {
-        return CPUGame;
-    }
-
     public void markWinningPositionAndEnd(int[] winningCombination) {
         buttonsOfTableBoard[winningCombination[0]].setBackground(clrBtnWonColor);
         buttonsOfTableBoard[winningCombination[1]].setBackground(clrBtnWonColor);
@@ -337,7 +336,7 @@ public class TicTacToeFrame {
     public boolean isMenuAboutPushed(Object source) {
         return isMenuItemEqualToSource(mnuAbout, source);
     }
-    
+
     private boolean isMenuItemEqualToSource(JMenuItem jMenuItem, Object source) {
         return jMenuItem == source;
     }

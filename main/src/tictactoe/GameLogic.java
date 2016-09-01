@@ -1,7 +1,10 @@
 package tictactoe;
 
 import tictactoe.model.BoardState;
+import tictactoe.model.GameType;
 import tictactoe.model.TableCharacter;
+
+import static tictactoe.model.GameType.PLAYER_VS_CPU;
 
 public class GameLogic {
     
@@ -12,7 +15,8 @@ public class GameLogic {
     private static GameLogic gameLogic;
 
     private BoardState boardState;
-
+    private GameType gameType;
+    
     private boolean inGame;
     private boolean win;
     private int winningCombinationIndex;
@@ -151,4 +155,21 @@ public class GameLogic {
     private boolean isAvailableCell(int randomPosition) {
         return boardState.getStateAtPosition(randomPosition) == TableCharacter.EMPTY;
     }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    public GameType getGameType() {
+        return gameType;
+    }
+
+    public boolean isCPUGame() {
+        return gameType == PLAYER_VS_CPU;
+    }
+
+    public boolean isNotAWinningCombination() {
+        return getWiningCombinationIfExisting() == NOT_A_WINING_COMBINATION;
+    }
+
 }

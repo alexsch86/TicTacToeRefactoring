@@ -41,7 +41,9 @@ public class MenuController implements ActionListener {
             if(gameLogic.isInGame())	{
                 gameLogic.setInGame(ticTacToeFrame.startNewGameWhileGameRunning());
             } else	{
-                ticTacToeFrame.startNewGame(source);
+                gameLogic.setGameType(ticTacToeFrame.getTypeOfGame(source));
+                gameLogic.initGameLogicData();
+                ticTacToeFrame.startNewGame(gameLogic.getGameType());
             }
         }
 //        else if(source == btnContinue)	{
