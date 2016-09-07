@@ -4,6 +4,7 @@ import tictactoe.listeners.MenuController;
 import tictactoe.listeners.TicTacToeGameController;
 import tictactoe.model.BoardState;
 import tictactoe.model.GameType;
+import tictactoe.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +63,7 @@ public class TicTacToeFrame {
     private int winCounterPlayer2 = 0;
     private int option;
     
-    String message,
+    private String message,
             player1Name = "Player 1", player2Name = "Player 2",
             tempPlayer2 = "Player 2";
     
@@ -310,6 +311,12 @@ public class TicTacToeFrame {
             jButton.setEnabled(jButton.getText().equals(""));
         }
     }
+    
+    private void disableTableButtons() {
+        for(JButton jButton : buttonsOfTableBoard) {
+            jButton.setEnabled(false);
+        }
+    }
 
     private void refreshButtonsText(BoardState boardState) {
         List<JButton> buttons = asList(buttonsOfTableBoard);
@@ -323,6 +330,8 @@ public class TicTacToeFrame {
         buttonsOfTableBoard[winningCombination[0]].setBackground(clrBtnWonColor);
         buttonsOfTableBoard[winningCombination[1]].setBackground(clrBtnWonColor);
         buttonsOfTableBoard[winningCombination[2]].setBackground(clrBtnWonColor);
+        
+        disableTableButtons();
     }
 
     public boolean isNewGamePushed(Object source) {
@@ -387,6 +396,23 @@ public class TicTacToeFrame {
 
     public boolean isGameHumanVersusComputer(Object source) {
         return source == btn1vCPU;
+    }
+
+    public void displayPlayerHasWon(Player winningPlayer) {
+        message = winningPlayer.getTableCharacter() + " has won";
+        
+        setTextMessageAndShowOnPanelTop();
+    }
+
+    public void displayPlayersHaveTied() {
+        message = "Both players have tied!\nBetter luck next time.";
+
+        setTextMessageAndShowOnPanelTop();
+    }
+
+    public void displayPlayerTurn(Player player) {
+        String whoTurn = player.getTableCharacter().getCharacter();
+        lblTurn.setText("Turn: " + whoTurn);
     }
 //-------------------END OF ACTION PERFORMED METHOD-------------------------//
 }

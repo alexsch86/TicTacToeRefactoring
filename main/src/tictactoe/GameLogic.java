@@ -2,9 +2,12 @@ package tictactoe;
 
 import tictactoe.model.BoardState;
 import tictactoe.model.GameType;
+import tictactoe.model.Player;
 import tictactoe.model.TableCharacter;
 
 import static tictactoe.model.GameType.PLAYER_VS_CPU;
+import static tictactoe.model.Player.FIRST;
+import static tictactoe.model.Player.SECOND;
 
 public class GameLogic {
     
@@ -34,6 +37,8 @@ public class GameLogic {
     
     public void initGameLogicData() {
         turn = 1;
+        win = false;
+        inGame = false;
         winningCombinationIndex = NOT_A_WINING_COMBINATION;
         boardState = new BoardState();
     }
@@ -53,7 +58,7 @@ public class GameLogic {
     public boolean isGameRunning() {
         return turn < 10;
     }
-
+    
     public boolean isPlayerXTurn() {
         return !(turn % 2 == 0);
     }
@@ -85,53 +90,16 @@ public class GameLogic {
         return boardState.getWinCombination0BasedIndexes(winningCombinationIndex);
     }
 
-    public void checkGameIsOver()	{	//	checks if there are 3 symbols in a row vertically, diagonally, or horizontally.
-        //	then shows a message and disables buttons. If the game is over then it asks
-        //	if you want to play again.
+    public void checkGameIsOver()	{	
         int winingCombinationIfExisting = getWiningCombinationIfExisting();
         if(winingCombinationIfExisting != NOT_A_WINING_COMBINATION) {
             win = true;
             winningCombinationIndex = winingCombinationIfExisting;
         }
         
-//        if(win || (!win && turn > NUMBER_OF_BUTTONS))	{
-//            if(win)	{
-//                if(buttonsOfTableBoard[wonNumber1].getText().equals("X"))	{
-//                    message = player1Name + " has won";
-//                    winCounterPlayer1++;
-//                } else	{
-//                    message = player2Name + " has won";
-//                    winCounterPlayer2++;
-//                }
-//                
-//            } else if(!win && turn>NUMBER_OF_BUTTONS) {
-//                message = "Both players have tied!\nBetter luck next time.";
-//            }
-//            
-//            showMessage(message);
-//            for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-//                buttonsOfTableBoard[i].setEnabled(false);
-//            }
-//            btnTryAgain.setEnabled(true);
-//            checkWinStatus();
-//        } else {
-//            checkTurn();
-//        }
     }
 
-    public void checkTurn()	{
-        String whoTurn;
-//        if(!(turn % 2 == 0))	{
-//            whoTurn = player1Name + " [X]";
-//        }	else	{
-//            whoTurn = player2Name + " [O]";
-//        }
-//        lblTurn.setText("Turn: " + whoTurn);
-    }
-
-
-
-    public int getWiningCombinationIfExisting() {
+    private int getWiningCombinationIfExisting() {
         for(int i=0; i < 8; i++)	{   
             if(boardState.isCombinationForWinSituation(i)) {
                 return i;
@@ -170,6 +138,14 @@ public class GameLogic {
 
     public boolean isNotAWinningCombination() {
         return getWiningCombinationIfExisting() == NOT_A_WINING_COMBINATION;
+    }
+
+    public boolean isGameOver() {
+        return ! isGameRunning();
+    }
+
+    public Player getCurrentPlayer() {
+        return isPlayerXTurn() ? FIRST : SECOND;
     }
 
 }

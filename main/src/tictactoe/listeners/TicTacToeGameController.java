@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static tictactoe.GameLogic.NOT_A_WINING_COMBINATION;
 import static tictactoe.GameLogic.gameLogicInstance;
 import static tictactoe.model.TableCharacter.X;
 import static tictactoe.model.TableCharacter.ZERO;
@@ -34,21 +33,38 @@ public class TicTacToeGameController implements ActionListener {
             } else {
                 gameLogic.getBoardState().setStateAtPosition(positionOfButton, ZERO);
             }
+
             gameLogic.incrementGameTurn();
-            // check win
             gameLogic.checkGameIsOver();
+
+            if(gameLogic.isCPUGame()) {
+                if (gameLogic.isNotAWinningCombination() && ! gameLogic.isWin()) {
+                    this.gameLogic.doAI();
+                }
+                this.ticTacToeFrame.refreshTableBoard(gameLogic.getBoardState());
+            }
+            
             if(gameLogic.isWin()) {
                 ticTacToeFrame.markWinningPositionAndEnd(gameLogic.getWinningCombination());
             }
-
-            if(gameLogic.isCPUGame()) {
-                if (gameLogic.isNotAWinningCombination()) {
-                    this.gameLogic.doAI();
-                    this.ticTacToeFrame.refreshTableBoard(gameLogic.getBoardState());
-                }
-            }
+            
+            displayResults();
         }
     }
 
-    
+    private void displayResults() {
+       if(gameLogic.isWin() || gameLogic.isGameOver())	{
+            if(gameLogic.isWin())	{
+                ticTacToeFrame.displayPlayerHasWon(gameLogic.getCurrentPlayer());
+            } else {
+                ticTacToeFrame.displayPlayersHaveTied();
+            }
+            
+//            btnTryAgain.setEnabled(true);
+        } else {
+           ticTacToeFrame.displayPlayerTurn(gameLogic.getCurrentPlayer());
+        }
+        
+    }
+
 }
