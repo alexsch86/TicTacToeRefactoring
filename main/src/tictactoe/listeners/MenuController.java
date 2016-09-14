@@ -3,6 +3,7 @@ package tictactoe.listeners;
 import tictactoe.GameLogic;
 import tictactoe.TicTacToeFrame;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,38 +37,40 @@ public class MenuController implements ActionListener {
                 }
             }
             ticTacToeFrame.addTopPanelToMainPanel();
-        }
-        else if(ticTacToeFrame.isGameHumanVsHuman(source) || ticTacToeFrame.isGameHumanVersusComputer(source))	{
+            
+        } else if(ticTacToeFrame.isGameHumanVsHuman(source) || ticTacToeFrame.isGameHumanVersusComputer(source))	{
             if(gameLogic.isInGame())	{
                 gameLogic.setInGame(ticTacToeFrame.startNewGameWhileGameRunning());
             } else	{
-                gameLogic.setGameType(ticTacToeFrame.getTypeOfGame(source));
-                gameLogic.initGameLogicData();
-                ticTacToeFrame.startNewGame(gameLogic.getGameType());
+                initializeNewGame(source);
             }
+        } else if(ticTacToeFrame.isContinueButtonPushed(source))	{
+            ticTacToeFrame.displayLayoutOfBoard();
         }
-//        else if(source == btnContinue)	{
-////            checkTurn();
-//            showGame();
-//        }
 //        else if(source == btnSetName)	{
 //            askUserForPlayerNames();
 //        }
-//        else if(source == mnuExit)	{
-//            option = askMessage("Are you sure you want to exit?", "Exit Game", JOptionPane.YES_NO_OPTION);
-//            if(option == JOptionPane.YES_OPTION)
-//                System.exit(0);
-//        }
-//        else if(source == btnTryAgain)	{
-//            newGame();
-//            btnTryAgain.setEnabled(false);
-//        }
-//        else if(source == btnQuit)	{
-//            quit();
-//        }
+        else if(ticTacToeFrame.isExitMenuPushed(source))	{
+            int option = ticTacToeFrame.askMessage(
+                    "Are you sure you want to exit?",
+                    "Exit Game",
+                    JOptionPane.YES_NO_OPTION);
+            if(option == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        } else if(ticTacToeFrame.isTryAgainButtonPushed(source))	{
+            initializeNewGame(source);
+        } else if(ticTacToeFrame.isQuitButtonPushed(source))	{
+            ticTacToeFrame.quit();
+        }
 
         ticTacToeFrame.resetMainPanelVisibility();
+    }
 
+    private void initializeNewGame(Object source) {
+        gameLogic.setGameType(ticTacToeFrame.getTypeOfGame(source));
+        gameLogic.initGameLogicData();
+        ticTacToeFrame.startNewGame(gameLogic.getGameType());
     }
 
 

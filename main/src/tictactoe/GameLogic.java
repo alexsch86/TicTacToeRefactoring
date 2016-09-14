@@ -148,4 +148,7 @@ public class GameLogic {
         return isPlayerXTurn() ? FIRST : SECOND;
     }
 
+    public Player getPreviousPlayer() {
+        return isPlayerXTurn() ? SECOND : FIRST;
+    }
 }

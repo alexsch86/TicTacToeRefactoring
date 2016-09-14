@@ -163,7 +163,7 @@ public class TicTacToeFrame {
         }
     }
 
-    private void doLayout()	{	//	Shows the Playing Field
+    public void displayLayoutOfBoard()	{	//	Shows the Playing Field
         //	*IMPORTANT*- Does not start out brand new (meaning just shows what it had before)
         clearPanelSouth();
         pnlMain.setLayout(new BorderLayout());
@@ -176,7 +176,6 @@ public class TicTacToeFrame {
         pnlMain.add(pnlTop, BorderLayout.CENTER);
         pnlMain.add(pnlBottom, BorderLayout.SOUTH);
         pnlPlayingField.requestFocus();
-//        checkTurn();        
     }
     
     private void resetBoard()	{	//	Sets all the game required variables to default
@@ -186,11 +185,11 @@ public class TicTacToeFrame {
             buttonsOfTableBoard[i].setEnabled(true);
         }
 //        win = false;
-        doLayout();
+        displayLayoutOfBoard();
         displayWinStatus();
     }
     
-    private void quit()	{
+    public void quit()	{
         lblMode.setText("");
         btnContinue.setEnabled(false);
         clearPanelSouth();
@@ -205,7 +204,7 @@ public class TicTacToeFrame {
         temp = getInput("Enter player 1 name:", player1Name);
         if(temp == null)	{/*Do Nothing*/}
         else if(temp.equals(""))
-            showMessage("Invalid Name!");
+            showMessageOnPopup("Invalid Name!");
         else if(temp.equals(player2Name))	{
             option = askMessage("Player 1 name matches Player 2's\nDo you want to continue?", "Name Match", JOptionPane.YES_NO_OPTION);
             if(option == JOptionPane.YES_OPTION)
@@ -221,7 +220,7 @@ public class TicTacToeFrame {
         temp = getInput("Enter player 2 name:", player2Name);
         if(temp == null)	{/*Do Nothing*/}
         else if(temp.equals(""))
-            showMessage("Invalid Name!");
+            showMessageOnPopup("Invalid Name!");
         else if(temp.equals(player1Name))	{
             option = askMessage("Player 2 name matches Player 1's\nDo you want to continue?", "Name Match", JOptionPane.YES_NO_OPTION);
             if(option == JOptionPane.YES_OPTION)
@@ -246,7 +245,7 @@ public class TicTacToeFrame {
         lblStatus.setText(player1Name + ": " + winCounterPlayer1 + " | " + player2Name + ": " + winCounterPlayer2);
     }
     
-    private int askMessage(String msg, String tle, int op)	{
+    public int askMessage(String msg, String tle, int op)	{
         return JOptionPane.showConfirmDialog(null, msg, tle, op);
     }
     
@@ -254,7 +253,7 @@ public class TicTacToeFrame {
         return JOptionPane.showInputDialog(null, msg, setText);
     }
     
-    private void showMessage(String msg)	{
+    private void showMessageOnPopup(String msg)	{
         JOptionPane.showMessageDialog(null, msg);
     }
     
@@ -273,6 +272,8 @@ public class TicTacToeFrame {
     
     public void startNewGame(GameType gameType) {
         btnContinue.setEnabled(true);
+        btnTryAgain.setEnabled(false);
+        
         if(gameType == PLAYER_VS_PLAYER)	{
             player2Name = tempPlayer2;
             lblMode.setText(gameType.name());
@@ -398,21 +399,38 @@ public class TicTacToeFrame {
         return source == btn1vCPU;
     }
 
+    public boolean isQuitButtonPushed(Object source) {
+        return source == btnQuit;
+    }
+
+    public boolean isTryAgainButtonPushed(Object source) {
+        return source == btnTryAgain;
+    }
+
+    public boolean isExitMenuPushed(Object source) {
+        return source == mnuExit;
+    }
+
     public void displayPlayerHasWon(Player winningPlayer) {
-        message = winningPlayer.getTableCharacter() + " has won";
-        
-        setTextMessageAndShowOnPanelTop();
+        showMessageOnPopup(winningPlayer.getTableCharacter() + " has won");
     }
 
     public void displayPlayersHaveTied() {
-        message = "Both players have tied!\nBetter luck next time.";
-
-        setTextMessageAndShowOnPanelTop();
+        showMessageOnPopup("Both players have tied!\nBetter luck next time.");
     }
 
     public void displayPlayerTurn(Player player) {
         String whoTurn = player.getTableCharacter().getCharacter();
         lblTurn.setText("Turn: " + whoTurn);
+    }
+
+    public void resetTryAgainAndContinue() {
+        btnTryAgain.setEnabled(true);
+        btnContinue.setEnabled(false);
+    }
+
+    public boolean isContinueButtonPushed(Object source) {
+        return source == btnContinue;
     }
 //-------------------END OF ACTION PERFORMED METHOD-------------------------//
 }

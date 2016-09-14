@@ -55,12 +55,12 @@ public class TicTacToeGameController implements ActionListener {
     private void displayResults() {
        if(gameLogic.isWin() || gameLogic.isGameOver())	{
             if(gameLogic.isWin())	{
-                ticTacToeFrame.displayPlayerHasWon(gameLogic.getCurrentPlayer());
+                ticTacToeFrame.displayPlayerHasWon(gameLogic.getPreviousPlayer());
             } else {
                 ticTacToeFrame.displayPlayersHaveTied();
             }
             
-//            btnTryAgain.setEnabled(true);
+            ticTacToeFrame.resetTryAgainAndContinue();
         } else {
            ticTacToeFrame.displayPlayerTurn(gameLogic.getCurrentPlayer());
         }
