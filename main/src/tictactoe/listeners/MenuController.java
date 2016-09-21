@@ -46,10 +46,9 @@ public class MenuController implements ActionListener {
             }
         } else if(ticTacToeFrame.isContinueButtonPushed(source))	{
             ticTacToeFrame.displayLayoutOfBoard();
+        } else if(ticTacToeFrame.isButtonSetNamesPushed(source))	{
+            ticTacToeFrame.askUserForPlayerNames();
         }
-//        else if(source == btnSetName)	{
-//            askUserForPlayerNames();
-//        }
         else if(ticTacToeFrame.isExitMenuPushed(source))	{
             int option = ticTacToeFrame.askMessage(
                     "Are you sure you want to exit?",

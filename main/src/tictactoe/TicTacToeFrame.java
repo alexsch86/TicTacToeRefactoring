@@ -4,7 +4,7 @@ import tictactoe.listeners.MenuController;
 import tictactoe.listeners.TicTacToeGameController;
 import tictactoe.model.BoardState;
 import tictactoe.model.GameType;
-import tictactoe.model.Player;
+import tictactoe.model.PlayerOrder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 import static java.util.Arrays.asList;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static tictactoe.GameLogic.NUMBER_OF_BUTTONS;
 import static tictactoe.model.GameType.PLAYER_VS_CPU;
 import static tictactoe.model.GameType.PLAYER_VS_PLAYER;
+import static tictactoe.util.Utils.isStringEmpty;
 
 public class TicTacToeFrame {
     
@@ -61,20 +63,19 @@ public class TicTacToeFrame {
     
     private int winCounterPlayer1 = 0;
     private int winCounterPlayer2 = 0;
-    private int option;
     
     private String message,
             player1Name = "Player 1", player2Name = "Player 2",
             tempPlayer2 = "Player 2";
     
-    public TicTacToeFrame() {    //Setting game properties and layout and sytle...
+    TicTacToeFrame() {    //Setting game properties and layout and sytle...
 
         //Setting window properties:
         window.setSize(X, Y);
         window.setLocation(350, 260);
         //window.setResizable(false);
         window.setLayout(new BorderLayout());
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //Setting Menu, Main, Top, Bottom Panel Layout/Backgrounds
         pnlMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -198,42 +199,37 @@ public class TicTacToeFrame {
         pnlMain.add(pnlTop);
     }
     
-    private void askUserForPlayerNames()	{
-        String temp;
+    public void askUserForPlayerNames()	{
         boolean tempIsValid = false;
-        temp = getInput("Enter player 1 name:", player1Name);
-        if(temp == null)	{/*Do Nothing*/}
-        else if(temp.equals(""))
+        String playerName = getInput("Enter player 1 name:", player1Name);
+        if(isStringEmpty(playerName)) {
             showMessageOnPopup("Invalid Name!");
-        else if(temp.equals(player2Name))	{
-            option = askMessage("Player 1 name matches Player 2's\nDo you want to continue?", "Name Match", JOptionPane.YES_NO_OPTION);
-            if(option == JOptionPane.YES_OPTION)
-                tempIsValid = true;
-        } else if(temp != null)	{
+        } else if(playerName.equals(player2Name))	{
+            tempIsValid = JOptionPane.YES_OPTION ==
+                    askMessage("PlayerOrder 1 name matches PlayerOrder 2's\nDo you want to continue?", "Name Match", JOptionPane.YES_NO_OPTION);
+        } else {
             tempIsValid = true;
         }
         if(tempIsValid)	{
-            player1Name = temp;
+            player1Name = playerName;
             tempIsValid = false;
         }
 
-        temp = getInput("Enter player 2 name:", player2Name);
-        if(temp == null)	{/*Do Nothing*/}
-        else if(temp.equals(""))
+        playerName = getInput("Enter player 2 name:", player2Name);
+        if(isStringEmpty(playerName)) {
             showMessageOnPopup("Invalid Name!");
-        else if(temp.equals(player1Name))	{
-            option = askMessage("Player 2 name matches Player 1's\nDo you want to continue?", "Name Match", JOptionPane.YES_NO_OPTION);
-            if(option == JOptionPane.YES_OPTION)
-                tempIsValid = true;
-        } else if(temp != null)	{
+        } else if(playerName.equals(player1Name))	{
+            tempIsValid = JOptionPane.YES_OPTION ==
+                askMessage("PlayerOrder 2 name matches PlayerOrder 1's\nDo you want to continue?", "Name Match", JOptionPane.YES_NO_OPTION);
+        } else	{
             tempIsValid = true;
         }
         if(tempIsValid)	{
-            player2Name = temp;
-            tempPlayer2 = temp;
-            tempIsValid = false;
+            player2Name = playerName;
+            tempPlayer2 = playerName;
         }
     }
+
     //-----------------------------------------------------------------------------------------------------------------------------------
     public void setDefaultLayout()	{
         pnlMain.setLayout(new GridLayout(2, 1, 2, 5));
@@ -297,7 +293,7 @@ public class TicTacToeFrame {
     }
 
     public boolean startNewGameWhileGameRunning() {
-        option = askMessage("If you start a new game," +
+        int option = askMessage("If you start a new game," +
                         "your current game will be lost..." + "\n" +
                         "Are you sure you want to continue?",
                 "Quit Game?" , JOptionPane.YES_NO_OPTION
@@ -411,7 +407,7 @@ public class TicTacToeFrame {
         return source == mnuExit;
     }
 
-    public void displayPlayerHasWon(Player winningPlayer) {
+    public void displayPlayerHasWon(PlayerOrder winningPlayer) {
         showMessageOnPopup(winningPlayer.getTableCharacter() + " has won");
     }
 
@@ -419,7 +415,7 @@ public class TicTacToeFrame {
         showMessageOnPopup("Both players have tied!\nBetter luck next time.");
     }
 
-    public void displayPlayerTurn(Player player) {
+    public void displayPlayerTurn(PlayerOrder player) {
         String whoTurn = player.getTableCharacter().getCharacter();
         lblTurn.setText("Turn: " + whoTurn);
     }
@@ -431,6 +427,10 @@ public class TicTacToeFrame {
 
     public boolean isContinueButtonPushed(Object source) {
         return source == btnContinue;
+    }
+
+    public boolean isButtonSetNamesPushed(Object source) {
+        return source == btnSetName;
     }
 //-------------------END OF ACTION PERFORMED METHOD-------------------------//
 }

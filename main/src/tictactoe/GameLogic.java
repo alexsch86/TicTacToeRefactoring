@@ -1,24 +1,23 @@
 package tictactoe;
 
-import tictactoe.model.BoardState;
-import tictactoe.model.GameType;
-import tictactoe.model.Player;
-import tictactoe.model.TableCharacter;
+import tictactoe.model.*;
 
 import static tictactoe.model.GameType.PLAYER_VS_CPU;
-import static tictactoe.model.Player.FIRST;
-import static tictactoe.model.Player.SECOND;
+import static tictactoe.model.PlayerOrder.FIRST;
+import static tictactoe.model.PlayerOrder.SECOND;
 
 public class GameLogic {
     
     static final int NUMBER_OF_BUTTONS = 9;
     
-    public static final int NOT_A_WINING_COMBINATION = -1;
+    private static final int NOT_A_WINING_COMBINATION = -1;
     private static final int NOT_A_POSITION = -1;
     private static GameLogic gameLogic;
 
     private BoardState boardState;
     private GameType gameType;
+    private Player player1;
+    private Player player2;
     
     private boolean inGame;
     private boolean win;
@@ -144,11 +143,11 @@ public class GameLogic {
         return ! isGameRunning();
     }
 
-    public Player getCurrentPlayer() {
+    public PlayerOrder getCurrentPlayer() {
         return isPlayerXTurn() ? FIRST : SECOND;
     }
 
-    public Player getPreviousPlayer() {
+    public PlayerOrder getPreviousPlayer() {
         return isPlayerXTurn() ? SECOND : FIRST;
     }
 }
