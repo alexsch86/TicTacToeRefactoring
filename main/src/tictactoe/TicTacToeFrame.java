@@ -2,9 +2,7 @@ package tictactoe;
 
 import tictactoe.listeners.MenuController;
 import tictactoe.listeners.TicTacToeGameController;
-import tictactoe.model.BoardState;
-import tictactoe.model.GameType;
-import tictactoe.model.PlayerOrder;
+import tictactoe.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +10,14 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static tictactoe.GameLogic.NUMBER_OF_BUTTONS;
 import static tictactoe.model.GameType.PLAYER_VS_CPU;
 import static tictactoe.model.GameType.PLAYER_VS_PLAYER;
+import static tictactoe.model.Operation.*;
 import static tictactoe.util.Utils.isStringEmpty;
 
 public class TicTacToeFrame {
@@ -28,17 +28,17 @@ public class TicTacToeFrame {
     JFrame window = new JFrame("Tic-Tac-Toe " + VERSION);
 
     JMenuBar mnuMain = new JMenuBar();
-    JMenuItem mnuNewGame = new JMenuItem("New Game"),
-            mnuInstruction = new JMenuItem("Instructions"),
-            mnuExit = new JMenuItem("Exit"),
-            mnuAbout = new JMenuItem("About");
+    JMenuItem mnuNewGame = new GameMenuItem(NEW_GAME),
+            mnuInstruction = new GameMenuItem(SHOW_INSTRUCTIONS),
+            mnuExit = new GameMenuItem(EXIT_MENU),
+            mnuAbout = new GameMenuItem(SHOW_ABOUT);
 
-    JButton btn1v1 = new JButton("Player vs Player"),
-            btn1vCPU = new JButton("Player vs Computer"),
-            btnQuit = new JButton("Quit"),
-            btnSetName = new JButton("Set Player Names"),
-            btnContinue = new JButton("Continue..."),
-            btnTryAgain = new JButton("Try Again?");
+    JButton btn1v1 = new GameButton(PLAY_HUMAN_VS_HUMAN),
+            btn1vCPU = new GameButton(PLAY_HUMAN_VS_CPU),
+            btnQuit = new GameButton(QUIT),
+            btnSetName = new GameButton(SET_PLAYER_NAMES),
+            btnContinue = new GameButton(CONTINUE_GAME),
+            btnTryAgain = new GameButton(TRY_AGAIN);
     JButton buttonsOfTableBoard[] = new JButton[NUMBER_OF_BUTTONS];
 
     JPanel pnlNewGame = new JPanel(),
@@ -68,8 +68,12 @@ public class TicTacToeFrame {
             player1Name = "Player 1", player2Name = "Player 2",
             tempPlayer2 = "Player 2";
     
-    TicTacToeFrame() {    //Setting game properties and layout and sytle...
+    TicTacToeFrame() {    
+        setupGameFrame();
+    }
 
+    //Setting game properties, ayout and sytle...
+    private void setupGameFrame() {
         //Setting window properties:
         window.setSize(X, Y);
         window.setLocation(350, 260);
@@ -114,7 +118,7 @@ public class TicTacToeFrame {
         txtMessage.setBackground(new Color(mainColorR - 30, mainColorG - 30, mainColorB - 30));
         txtMessage.setForeground(Color.white);
         txtMessage.setEditable(false);
-        
+
         setupGameMenu();
         setupGameBoard();
 
@@ -333,6 +337,11 @@ public class TicTacToeFrame {
 
     public boolean isNewGamePushed(Object source) {
         return isMenuItemEqualToSource(mnuNewGame, source);
+    }
+    
+    public Operation getOperation(Object source) {
+        IOperation operation = (IOperation) source;
+        return operation.getOperation();
     }
 
     public boolean isMenuInstructionPushed(Object source) {

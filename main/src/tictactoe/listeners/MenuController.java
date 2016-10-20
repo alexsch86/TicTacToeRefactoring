@@ -2,12 +2,14 @@ package tictactoe.listeners;
 
 import tictactoe.GameLogic;
 import tictactoe.TicTacToeFrame;
+import tictactoe.model.Operation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static tictactoe.GameLogic.gameLogicInstance;
+import static tictactoe.model.Operation.*;
 
 public class MenuController implements ActionListener {
     
@@ -21,49 +23,68 @@ public class MenuController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-
-        if(ticTacToeFrame.isNewGamePushed(source) || ticTacToeFrame.isMenuInstructionPushed(source) || ticTacToeFrame.isMenuAboutPushed(source))	{
-            ticTacToeFrame.clearPanelSouth();
-            ticTacToeFrame.setDefaultLayout();
-
-            if(ticTacToeFrame.isNewGamePushed(source))	{
-                ticTacToeFrame.addNewGamePanelToTopPanel();
-            } else {
-                if(ticTacToeFrame.isMenuInstructionPushed(source))	{
-                    ticTacToeFrame.displayInstructionPopup();
-                    
-                } else	{//About
-                    ticTacToeFrame.displayAboutPopup();
+        Operation operation = ticTacToeFrame.getOperation(source);
+        
+        switch (operation) {
+            case PLAY_HUMAN_VS_HUMAN:
+            case PLAY_HUMAN_VS_CPU:
+                if(gameLogic.isInGame())	{
+                    gameLogic.setInGame(ticTacToeFrame.startNewGameWhileGameRunning());
+                } else	{
+                    initializeNewGame(source);
                 }
-            }
-            ticTacToeFrame.addTopPanelToMainPanel();
-            
-        } else if(ticTacToeFrame.isGameHumanVsHuman(source) || ticTacToeFrame.isGameHumanVersusComputer(source))	{
-            if(gameLogic.isInGame())	{
-                gameLogic.setInGame(ticTacToeFrame.startNewGameWhileGameRunning());
-            } else	{
+                break;
+            case CONTINUE_GAME:
+                ticTacToeFrame.displayLayoutOfBoard();
+                break;
+            case SET_PLAYER_NAMES:
+                ticTacToeFrame.askUserForPlayerNames();
+                break;
+            case EXIT_MENU:
+                askAndExecuteExit();
+                break;
+            case TRY_AGAIN:
                 initializeNewGame(source);
-            }
-        } else if(ticTacToeFrame.isContinueButtonPushed(source))	{
-            ticTacToeFrame.displayLayoutOfBoard();
-        } else if(ticTacToeFrame.isButtonSetNamesPushed(source))	{
-            ticTacToeFrame.askUserForPlayerNames();
-        }
-        else if(ticTacToeFrame.isExitMenuPushed(source))	{
-            int option = ticTacToeFrame.askMessage(
-                    "Are you sure you want to exit?",
-                    "Exit Game",
-                    JOptionPane.YES_NO_OPTION);
-            if(option == JOptionPane.YES_OPTION) {
-                System.exit(0);
-            }
-        } else if(ticTacToeFrame.isTryAgainButtonPushed(source))	{
-            initializeNewGame(source);
-        } else if(ticTacToeFrame.isQuitButtonPushed(source))	{
-            ticTacToeFrame.quit();
+                break;
+            case QUIT:
+                ticTacToeFrame.quit();
+                break;
+            case NEW_GAME:
+            case SHOW_INSTRUCTIONS:
+            case SHOW_ABOUT:
+                ticTacToeFrame.clearPanelSouth();
+                ticTacToeFrame.setDefaultLayout();
+
+                addPanelToFrameBasedOnMenuItemOperation(operation);
+                ticTacToeFrame.addTopPanelToMainPanel();
+                break;
         }
 
         ticTacToeFrame.resetMainPanelVisibility();
+    }
+
+    private void askAndExecuteExit() {
+        int option = ticTacToeFrame.askMessage(
+                "Are you sure you want to exit?",
+                "Exit Game",
+                JOptionPane.YES_NO_OPTION);
+        if(option == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+
+    private void addPanelToFrameBasedOnMenuItemOperation(Operation operation) {
+        switch(operation) {
+            case NEW_GAME:
+                ticTacToeFrame.addNewGamePanelToTopPanel();
+                break;
+            case SHOW_INSTRUCTIONS:
+                ticTacToeFrame.displayInstructionPopup();
+                break;
+            case SHOW_ABOUT:                
+                ticTacToeFrame.displayAboutPopup();
+                break;
+        }
     }
 
     private void initializeNewGame(Object source) {

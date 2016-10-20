@@ -14,6 +14,11 @@ TicTacToe-original folder contains the initial project that needed to be refacto
  * 1) Add players in game logic and remove players from frame
  * 2) Fix player vs player logic
  * 3) Try to extract frame into multiple view classes
- * 4) Create enum constants for each GUI operation and use switch in controller
+ * 4) Create enum constants for each GUI operation and use switch in controller - DONE
  * 5) Extract all hard-coded strings into constants (first step for i18n)
+ 
+ # Smart actions after 20.10.2016 meeting (Jamaica)
+ 
+ * 1) Write some unit tests for game logic and then, fix player vs player in Game logic
+ * 2) If time left, then look not done smart actions from previous meetings
  
