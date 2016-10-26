@@ -1,10 +1,10 @@
 package tictactoe.model;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static tictactoe.model.TableCharacter.EMPTY;
+import static tictactoe.model.TableCharacter.X;
+import static tictactoe.model.TableCharacter.ZERO;
 
 /**
  * Created by alexands on 16.06.2016.
@@ -55,4 +55,139 @@ public class BoardState {
     public int[] getWinCombination0BasedIndexes(int winningCombinationIndex) {
         return Arrays.stream(winCombo[winningCombinationIndex]).map(index -> index - 1).toArray();
     }
+
+    public int doNextMoveForCPU()	{
+        return getNextCellPositionForCPU() - 1;
+    }
+    
+    private int getNextCellPositionForCPU() {
+        if(getStateAtCell(1, 1)== ZERO && getStateAtCell(1, 2)== ZERO && getStateAtCell(1, 3)== EMPTY)
+            return 3;
+        else if(getStateAtCell(2, 1)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(2, 3)== EMPTY)
+            return 6;
+        else if(getStateAtCell(3, 1)== ZERO && getStateAtCell(3, 2)== ZERO && getStateAtCell(3, 3)== EMPTY)
+            return 9;
+
+        else if(getStateAtCell(1, 2)== ZERO && getStateAtCell(1, 3)== ZERO && getStateAtCell(1, 1)== EMPTY)
+            return 1;
+        else if(getStateAtCell(2, 2)== ZERO && getStateAtCell(2, 3)== ZERO && getStateAtCell(2, 1)== EMPTY)
+            return 4;
+        else if(getStateAtCell(3, 2)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(3, 1)== EMPTY)
+            return 7;
+
+        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(1, 3)== ZERO && getStateAtCell(1, 2)== EMPTY)
+            return 2;
+        else if(getStateAtCell(2, 1)== ZERO && getStateAtCell(2, 3)== ZERO && getStateAtCell(2, 2)== EMPTY)
+            return 5;
+        else if(getStateAtCell(3, 1)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(3, 2)== EMPTY)
+            return 8;
+
+        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(2, 1)== ZERO && getStateAtCell(3, 1)== EMPTY)
+            return 7;
+        else if(getStateAtCell(1, 2)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 2)== EMPTY)
+            return 8;
+        else if(getStateAtCell(1, 3)== ZERO && getStateAtCell(2, 3)== ZERO && getStateAtCell(3, 3)== EMPTY)
+            return 9;
+
+        else if(getStateAtCell(2, 1)== ZERO && getStateAtCell(3, 1)== ZERO && getStateAtCell(1, 1)== EMPTY)
+            return 1;
+        else if(getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 2)== ZERO && getStateAtCell(1, 2)== EMPTY)
+            return 2;
+        else if(getStateAtCell(2, 3)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(1, 3)== EMPTY)
+            return 3;
+
+        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(3, 1)== ZERO && getStateAtCell(2, 1)== EMPTY)
+            return 4;
+        else if(getStateAtCell(1, 2)== ZERO && getStateAtCell(3, 2)== ZERO && getStateAtCell(2, 2)== EMPTY)
+            return 5;
+        else if(getStateAtCell(1, 3)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(2, 3)== EMPTY)
+            return 6;
+
+        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 3)== EMPTY)
+            return 9;
+        else if(getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(1, 1)== EMPTY)
+            return 1;
+        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(2, 2)== EMPTY)
+            return 5;
+
+        else if(getStateAtCell(1, 3)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 1)== EMPTY)
+            return 7;
+        else if(getStateAtCell(3, 1)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(1, 3)== EMPTY)
+            return 3;
+        else if(getStateAtCell(3, 1)== ZERO && getStateAtCell(1, 3)== ZERO && getStateAtCell(2, 2)== EMPTY)
+            return 5;
+
+        else if(getStateAtCell(1, 1)== X && getStateAtCell(1, 2)== X && getStateAtCell(1, 3)== EMPTY)
+            return 3;
+        else if(getStateAtCell(2, 1)== X && getStateAtCell(2, 2)== X && getStateAtCell(2, 3)== EMPTY)
+            return 6;
+        else if(getStateAtCell(3, 1)== X && getStateAtCell(3, 2)== X && getStateAtCell(3, 3)== EMPTY)
+            return 9;
+
+        else if(getStateAtCell(1, 2)== X && getStateAtCell(1, 3)== X && getStateAtCell(1, 1)== EMPTY)
+            return 1;
+        else if(getStateAtCell(2, 2)== X && getStateAtCell(2, 3)== X && getStateAtCell(2, 1)== EMPTY)
+            return 4;
+        else if(getStateAtCell(3, 2)== X && getStateAtCell(3, 3)== X && getStateAtCell(3, 1)== EMPTY)
+            return 7;
+
+        else if(getStateAtCell(1, 1)== X && getStateAtCell(1, 3)== X && getStateAtCell(1, 2)== EMPTY)
+            return 2;
+        else if(getStateAtCell(2, 1)== X && getStateAtCell(2, 3)== X && getStateAtCell(2, 2)== EMPTY)
+            return 5;
+        else if(getStateAtCell(3, 1)== X && getStateAtCell(3, 3)== X && getStateAtCell(3, 2)== EMPTY)
+            return 8;
+
+        else if(getStateAtCell(1, 1)== X && getStateAtCell(2, 1)== X && getStateAtCell(3, 1)== EMPTY)
+            return 7;
+        else if(getStateAtCell(1, 2)== X && getStateAtCell(2, 2)== X && getStateAtCell(3, 2)== EMPTY)
+            return 8;
+        else if(getStateAtCell(1, 3)== X && getStateAtCell(2, 3)== X && getStateAtCell(3, 3)== EMPTY)
+            return 9;
+
+        else if(getStateAtCell(2, 1)== X && getStateAtCell(3, 1)== X && getStateAtCell(1, 1)== EMPTY)
+            return 1;
+        else if(getStateAtCell(2, 2)== X && getStateAtCell(3, 2)== X && getStateAtCell(1, 2)== EMPTY)
+            return 2;
+        else if(getStateAtCell(2, 3)== X && getStateAtCell(3, 3)== X && getStateAtCell(1, 3)== EMPTY)
+            return 3;
+
+        else if(getStateAtCell(1, 1)== X && getStateAtCell(3, 1)== X && getStateAtCell(2, 1)== EMPTY)
+            return 4;
+        else if(getStateAtCell(1, 2)== X && getStateAtCell(3, 2)== X && getStateAtCell(2, 2)== EMPTY)
+            return 5;
+        else if(getStateAtCell(1, 3)== X && getStateAtCell(3, 3)== X && getStateAtCell(2, 3)== EMPTY)
+            return 6;
+
+        else if(getStateAtCell(1, 1)== X && getStateAtCell(2, 2)== X && getStateAtCell(3, 3)== EMPTY)
+            return 9;
+        else if(getStateAtCell(2, 2)== X && getStateAtCell(3, 3)== X && getStateAtCell(1, 1)== EMPTY)
+            return 1;
+        else if(getStateAtCell(1, 1)== X && getStateAtCell(3, 3)== X && getStateAtCell(2, 2)== EMPTY)
+            return 5;
+
+        else if(getStateAtCell(1, 3)== X && getStateAtCell(2, 2)== X && getStateAtCell(3, 1)== EMPTY)
+            return 7;
+        else if(getStateAtCell(3, 1)== X && getStateAtCell(2, 2)== X && getStateAtCell(1, 3)== EMPTY)
+            return 3;
+        else if(getStateAtCell(3, 1)== X && getStateAtCell(1, 3)== X && getStateAtCell(2, 2)== EMPTY)
+            return 5;
+
+        else if(getStateAtCell(1, 1)== X && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 3)== X)
+            return 6;
+
+        else if(getStateAtCell(1, 3)== X && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 1)== X)
+            return 4;
+
+        else if(getStateAtCell(2, 2)== EMPTY)
+            return 5;
+
+        else if(getStateAtCell(1, 1)== EMPTY)
+            return 1;
+        else
+            return 0;
+    }
+
+
+
 }

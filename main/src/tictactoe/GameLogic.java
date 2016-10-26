@@ -70,7 +70,7 @@ public class GameLogic {
         int computerButton;
         if(turn <= 9)	{
             turn++;
-            computerButton = CPU.doMove(boardState);
+            computerButton = boardState.doNextMoveForCPU();
             if(computerButton == NOT_A_POSITION) {
                 doRandomMove();
             } else {
