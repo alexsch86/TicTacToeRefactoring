@@ -37,10 +37,8 @@ public class TicTacToeGameController implements ActionListener {
             gameLogic.incrementGameTurn();
             gameLogic.checkGameIsOver();
 
-            if(gameLogic.isCPUGame()) {
-                if (gameLogic.isNotAWinningCombination() && ! gameLogic.isWin()) {
-                    this.gameLogic.doAI();
-                }
+            if(isCPUMoveTime()) {
+                this.gameLogic.doAI();
             }
             this.ticTacToeFrame.refreshTableBoard(gameLogic.getBoardState());
             
@@ -50,6 +48,12 @@ public class TicTacToeGameController implements ActionListener {
             
             displayResults();
         }
+    }
+
+    private boolean isCPUMoveTime() {
+        return gameLogic.isCPUGame() && 
+                gameLogic.isNotAWinningCombination() &&
+                !gameLogic.isWin();
     }
 
     private void displayResults() {
