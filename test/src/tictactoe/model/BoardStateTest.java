@@ -1,8 +1,11 @@
 package tictactoe.model;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by alexands on 26.10.2016.
@@ -23,7 +26,7 @@ public class BoardStateTest  {
 
         TableCharacter actual = boardState.getStateAtCell(2, 1);
 
-        Assert.assertEquals(actual, TableCharacter.X);
+        assertThat(actual).isEqualTo(TableCharacter.X);
     }
     
 }
