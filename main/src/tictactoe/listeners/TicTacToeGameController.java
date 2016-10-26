@@ -41,8 +41,8 @@ public class TicTacToeGameController implements ActionListener {
                 if (gameLogic.isNotAWinningCombination() && ! gameLogic.isWin()) {
                     this.gameLogic.doAI();
                 }
-                this.ticTacToeFrame.refreshTableBoard(gameLogic.getBoardState());
             }
+            this.ticTacToeFrame.refreshTableBoard(gameLogic.getBoardState());
             
             if(gameLogic.isWin()) {
                 ticTacToeFrame.markWinningPositionAndEnd(gameLogic.getWinningCombination());
