@@ -38,8 +38,8 @@ public class BoardState {
         return STATE[arrayPosition];
     }
 
-    public void setStateAtPosition(int position, TableCharacter tableCharacter) {
-        this.STATE[position] = tableCharacter;
+    public void setStateAtPosition(int zeroBasedPosition, TableCharacter tableCharacter) {
+        this.STATE[zeroBasedPosition] = tableCharacter;
     }
 
     public TableCharacter getStateAtPosition(int position) {

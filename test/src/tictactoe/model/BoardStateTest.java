@@ -28,5 +28,15 @@ public class BoardStateTest  {
 
         assertThat(actual).isEqualTo(TableCharacter.X);
     }
-    
+
+    @Test
+    public void doNextMoveForCPU_CPUHasWinningCombination_CPUWins() throws Exception {
+        boardState.setStateAtPosition(0, TableCharacter.ZERO);
+        boardState.setStateAtPosition(1, TableCharacter.ZERO);
+        boardState.setStateAtPosition(4, TableCharacter.X);
+        
+        int nextMove = boardState.doNextMoveForCPU();
+        
+        assertThat(nextMove).isEqualTo(2);
+    }
 }
