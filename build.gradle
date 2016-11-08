@@ -1,6 +1,15 @@
+group = 'tictactoe'
+version '1.0.0'
+
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: 'maven'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': project.name
+        attributes 'Implementation-Version': project.version
+    }
+}
 
 idea {
     module {
@@ -15,26 +24,23 @@ repositories {
     mavenCentral()
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['main/src']
-        }
-    }
-    test {
-        java {
-            srcDirs = ['test/src']
+project(':main') {
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['main/src']
+            }
         }
     }
 }
 
-group = 'tictactoe'
-version '1.0.0'
-
-jar {
-    manifest {
-        attributes 'Implementation-Title': project.name
-        attributes 'Implementation-Version': project.version
+project(':test') {
+    sourceSets {
+        test {
+            java {
+                srcDirs = ['test/src']
+            }
+        }
     }
 }
 
