@@ -11,6 +11,8 @@ import static tictactoe.model.TableCharacter.ZERO;
  */
 public class BoardState {
 
+    static final int NOT_A_POSITION = -1;
+
     private final int winCombo[][] = new int[][]{
             {1, 2, 3}, {1, 4, 7}, {1, 5, 9},
             {4, 5, 6}, {2, 5, 8}, {3, 5, 7},
@@ -56,7 +58,7 @@ public class BoardState {
         return Arrays.stream(winCombo[winningCombinationIndex]).map(index -> index - 1).toArray();
     }
 
-    public int doNextMoveForCPU()	{
+    public int getNextMoveForCPU()	{
         return getNextCellPositionForCPU() - 1;
     }
     
@@ -185,7 +187,7 @@ public class BoardState {
         else if(getStateAtCell(1, 1)== EMPTY)
             return 1;
         else
-            return 0;
+            return NOT_A_POSITION + 1;
     }
 
 

@@ -21,4 +21,8 @@ TicTacToe-original folder contains the initial project that needed to be refacto
  
  * 1) Write some unit tests for game logic and then, fix player vs player in Game logic - DONE
  * 2) If time left, then look not done smart actions from previous meetings
- 
+
+
+  # Smart actions after 09.11.2016 meeting (Jamaica)
+
+  * 1) Refactor CPU logic from BoardState taking in account the created tests
