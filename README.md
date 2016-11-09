@@ -19,6 +19,6 @@ TicTacToe-original folder contains the initial project that needed to be refacto
  
  # Smart actions after 20.10.2016 meeting (Jamaica)
  
- * 1) Write some unit tests for game logic and then, fix player vs player in Game logic
+ * 1) Write some unit tests for game logic and then, fix player vs player in Game logic - DONE
  * 2) If time left, then look not done smart actions from previous meetings
  

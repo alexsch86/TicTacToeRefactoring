@@ -24,22 +24,15 @@ repositories {
     mavenCentral()
 }
 
-project(':main') {
-    sourceSets {
-        main {
-            java {
-                srcDirs = ['main/src']
-            }
+sourceSets {
+    main {
+        java {
+            srcDirs = ['main/src']
         }
     }
-}
-
-project(':test') {
-    sourceSets {
-        test {
-            java {
-                srcDirs = ['test/src']
-            }
+    test {
+        java {
+            srcDirs = ['test/src']
         }
     }
 }
