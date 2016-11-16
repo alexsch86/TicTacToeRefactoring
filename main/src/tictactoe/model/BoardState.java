@@ -13,7 +13,7 @@ public class BoardState {
 
     static final int NOT_A_POSITION = -1;
 
-    private final int winCombo[][] = new int[][]{
+    private final int winningCombinations[][] = new int[][]{
             {1, 2, 3}, {1, 4, 7}, {1, 5, 9},
             {4, 5, 6}, {2, 5, 8}, {3, 5, 7},
             {7, 8, 9}, {3, 6, 9}
@@ -48,14 +48,14 @@ public class BoardState {
         return STATE[position];
     }
 
-    public boolean isCombinationForWinSituation(int i) {
-        return getStateAtPosition(winCombo[i][0] - 1) != TableCharacter.EMPTY &&
-                getStateAtPosition(winCombo[i][0] - 1) == getStateAtPosition(winCombo[i][1] - 1) &&
-                getStateAtPosition(winCombo[i][1] - 1) == getStateAtPosition(winCombo[i][2] - 1);
+    public boolean isWinningCombination(int winningCombinationIndex) {
+        return getStateAtPosition(winningCombinations[winningCombinationIndex][0] - 1) != TableCharacter.EMPTY &&
+                getStateAtPosition(winningCombinations[winningCombinationIndex][0] - 1) == getStateAtPosition(winningCombinations[winningCombinationIndex][1] - 1) &&
+                getStateAtPosition(winningCombinations[winningCombinationIndex][1] - 1) == getStateAtPosition(winningCombinations[winningCombinationIndex][2] - 1);
     }
 
     public int[] getWinCombination0BasedIndexes(int winningCombinationIndex) {
-        return Arrays.stream(winCombo[winningCombinationIndex]).map(index -> index - 1).toArray();
+        return Arrays.stream(winningCombinations[winningCombinationIndex]).map(index -> index - 1).toArray();
     }
 
     public int getNextMoveForCPU()	{
@@ -63,6 +63,8 @@ public class BoardState {
     }
     
     private int getNextCellPositionForCPU() {
+        Arrays.stream(winningCombinations).filter(arr -> {return isWithTwoCellsZeroAndThirdCellEmpty(arr); }).findFirst();
+
         if(getStateAtCell(1, 1)== ZERO && getStateAtCell(1, 2)== ZERO && getStateAtCell(1, 3)== EMPTY)
             return 3;
         else if(getStateAtCell(2, 1)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(2, 3)== EMPTY)
@@ -190,6 +192,19 @@ public class BoardState {
             return NOT_A_POSITION + 1;
     }
 
+    private boolean isWithTwoCellsZeroAndThirdCellEmpty(int[] winCombination) {
+        return availableCellForWinning(getStateAtPosition(winCombination[0] - 1),
+                getStateAtPosition(winCombination[1] - 1), getStateAtPosition(winCombination[2] - 1)) != NOT_A_POSITION;
+    }
+
+    // compare if two are equal and third is empty
+    private int availableCellForWinning(TableCharacter character, TableCharacter character1, TableCharacter character2) {
+//        if(character == EMPTY) {
+//            return character1 == ZERO && character2 == ZERO ?
+//        }
+//        return charactersAreZero;
+        return 0;
+    }
 
 
 }

@@ -42,7 +42,7 @@ public class BoardStateTest  {
     }
 
     @Test
-    public void doNextMoveForCPU_CPUHasWinningCombinationRow1Cell3_CPUWins() throws Exception {
+    public void doNextMoveForCPU_CPUCanWinRow1Cell3_CPUWins() throws Exception {
         boardState.setStateAtPosition(0, ZERO);
         boardState.setStateAtPosition(1, ZERO);
         boardState.setStateAtPosition(4, X);
@@ -53,7 +53,7 @@ public class BoardStateTest  {
     }
 
     @Test
-    public void doNextMoveForCPU_CPUHasWinningCombinationColumn2Cell2_CPUWins() throws Exception {
+    public void doNextMoveForCPU_CPUCanWinColumn2Cell2_CPUWins() throws Exception {
         boardState.setStateAtPosition(4, ZERO);
         boardState.setStateAtPosition(7, ZERO);
         boardState.setStateAtPosition(0, X);
@@ -64,7 +64,7 @@ public class BoardStateTest  {
     }
 
     @Test
-    public void doNextMoveForCPU_CPUHasWinningCombinationDiagonal1Cell9_CPUWins() throws Exception {
+    public void doNextMoveForCPU_CPUCanWinDiagonal1Cell9_CPUWins() throws Exception {
         boardState.setStateAtPosition(0, ZERO);
         boardState.setStateAtPosition(4, ZERO);
         boardState.setStateAtPosition(5, X);
@@ -75,7 +75,19 @@ public class BoardStateTest  {
     }
 
    @Test
-    public void doNextMoveForCPU_PlayerHasWinningCombinationRow1Cell2_CPUBlocks() throws Exception {
+    public void doNextMoveForCPU_CPUCanWinColumn1Cell7_PlayerCanWinColumn3Cell9_CPUWins() throws Exception {
+        boardState.setStateAtPosition(0, ZERO);
+        boardState.setStateAtPosition(3, ZERO);
+        boardState.setStateAtPosition(2, X);
+        boardState.setStateAtPosition(5, X);
+
+        int nextMove = boardState.getNextMoveForCPU();
+
+        assertThat(nextMove).isEqualTo(6);
+    }
+
+   @Test
+    public void doNextMoveForCPU_PlayerCanWinRow1Cell2_CPUBlocks() throws Exception {
         boardState.setStateAtPosition(0, X);
         boardState.setStateAtPosition(2, X);
         boardState.setStateAtPosition(5, ZERO);
@@ -86,7 +98,7 @@ public class BoardStateTest  {
     }
 
     @Test
-    public void doNextMoveForCPU_PlayerHasWinningCombinationColumn3Cell6_CPUBlocks() throws Exception {
+    public void doNextMoveForCPU_PlayerCanWinColumn3Cell6_CPUBlocks() throws Exception {
         boardState.setStateAtPosition(2, X);
         boardState.setStateAtPosition(8, X);
         boardState.setStateAtPosition(3, ZERO);
@@ -97,7 +109,7 @@ public class BoardStateTest  {
     }
 
     @Test
-    public void doNextMoveForCPU_PlayerHasWinningCombinationDiagonal2Cell5_CPUBlocks() throws Exception {
+    public void doNextMoveForCPU_PlayerCanWinDiagonal2Cell5_CPUBlocks() throws Exception {
         boardState.setStateAtPosition(2, X);
         boardState.setStateAtPosition(6, X);
         boardState.setStateAtPosition(3, ZERO);

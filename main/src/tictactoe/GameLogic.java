@@ -99,9 +99,9 @@ public class GameLogic {
     }
 
     private int getWiningCombinationIfExisting() {
-        for(int i=0; i < 8; i++)	{   
-            if(boardState.isCombinationForWinSituation(i)) {
-                return i;
+        for(int winningCombinationIndex = 0; winningCombinationIndex < 8; winningCombinationIndex++)	{
+            if(boardState.isWinningCombination(winningCombinationIndex)) {
+                return winningCombinationIndex;
             }
         }
         return NOT_A_WINING_COMBINATION;

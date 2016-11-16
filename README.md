@@ -26,3 +26,7 @@ TicTacToe-original folder contains the initial project that needed to be refacto
   # Smart actions after 09.11.2016 meeting (Jamaica)
 
   * 1) Refactor CPU logic from BoardState taking in account the created tests
+
+    # Smart actions after 16.11.2016 meeting (Jamaica)
+
+  * 1) Refactor predicate to filter arrays with winning combinations (method "isWithTwoCellsZeroAndThirdCellEmpty")
