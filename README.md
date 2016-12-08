@@ -30,3 +30,8 @@ TicTacToe-original folder contains the initial project that needed to be refacto
     # Smart actions after 16.11.2016 meeting (Jamaica)
 
   * 1) Refactor predicate to filter arrays with winning combinations (method "isWithTwoCellsZeroAndThirdCellEmpty")
+
+  # Smart actions after 08.12.2016 meeting (Jamaica)
+
+    * 1) Make all the data representation with 0-based index
+      2) Have a design session where we discuss all kind of improvements to the model and logic
