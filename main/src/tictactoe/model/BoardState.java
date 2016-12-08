@@ -1,10 +1,10 @@
 package tictactoe.model;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static tictactoe.model.TableCharacter.EMPTY;
-import static tictactoe.model.TableCharacter.X;
-import static tictactoe.model.TableCharacter.ZERO;
 
 /**
  * Created by alexands on 16.06.2016.
@@ -61,149 +61,54 @@ public class BoardState {
     public int getNextMoveForCPU()	{
         return getNextCellPositionForCPU() - 1;
     }
-    
+
+    // get next position or 0, if no more positions
     private int getNextCellPositionForCPU() {
-        Arrays.stream(winningCombinations).filter(arr -> {return isWithTwoCellsZeroAndThirdCellEmpty(arr); }).findFirst();
+        Optional<int[]> winningCombination = getCombinationWith2SameCellsAndThirdEmpty(TableCharacter.ZERO);
+        if(winningCombination.isPresent()) {
+            return getEmptyCellIndex(winningCombination);
+        }
 
-        if(getStateAtCell(1, 1)== ZERO && getStateAtCell(1, 2)== ZERO && getStateAtCell(1, 3)== EMPTY)
-            return 3;
-        else if(getStateAtCell(2, 1)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(2, 3)== EMPTY)
-            return 6;
-        else if(getStateAtCell(3, 1)== ZERO && getStateAtCell(3, 2)== ZERO && getStateAtCell(3, 3)== EMPTY)
-            return 9;
+        Optional<int[]> blockingCombination = getCombinationWith2SameCellsAndThirdEmpty(TableCharacter.X);
+        if(blockingCombination.isPresent()) {
+            return getEmptyCellIndex(blockingCombination);
+        }
 
-        else if(getStateAtCell(1, 2)== ZERO && getStateAtCell(1, 3)== ZERO && getStateAtCell(1, 1)== EMPTY)
-            return 1;
-        else if(getStateAtCell(2, 2)== ZERO && getStateAtCell(2, 3)== ZERO && getStateAtCell(2, 1)== EMPTY)
-            return 4;
-        else if(getStateAtCell(3, 2)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(3, 1)== EMPTY)
-            return 7;
+        return nextMove();
+    }
 
-        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(1, 3)== ZERO && getStateAtCell(1, 2)== EMPTY)
-            return 2;
-        else if(getStateAtCell(2, 1)== ZERO && getStateAtCell(2, 3)== ZERO && getStateAtCell(2, 2)== EMPTY)
+    private int getEmptyCellIndex(Optional<int[]> winningCombination) {
+        return Arrays.stream(winningCombination.get())
+                .filter(index -> getStateAtPosition(index - 1) == TableCharacter.EMPTY)
+                .findFirst()
+                .getAsInt();
+    }
+
+    private Optional<int[]> getCombinationWith2SameCellsAndThirdEmpty(TableCharacter character) {
+        return Arrays.stream(winningCombinations)
+                .filter(arr -> isCombinationWith2SameCellsAndThirdEmpty(arr, character))
+                .findFirst();
+    }
+
+    private int nextMove() {
+        if(getStateAtCell(2, 2)== EMPTY)
             return 5;
-        else if(getStateAtCell(3, 1)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(3, 2)== EMPTY)
-            return 8;
-
-        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(2, 1)== ZERO && getStateAtCell(3, 1)== EMPTY)
-            return 7;
-        else if(getStateAtCell(1, 2)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 2)== EMPTY)
-            return 8;
-        else if(getStateAtCell(1, 3)== ZERO && getStateAtCell(2, 3)== ZERO && getStateAtCell(3, 3)== EMPTY)
-            return 9;
-
-        else if(getStateAtCell(2, 1)== ZERO && getStateAtCell(3, 1)== ZERO && getStateAtCell(1, 1)== EMPTY)
-            return 1;
-        else if(getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 2)== ZERO && getStateAtCell(1, 2)== EMPTY)
-            return 2;
-        else if(getStateAtCell(2, 3)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(1, 3)== EMPTY)
-            return 3;
-
-        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(3, 1)== ZERO && getStateAtCell(2, 1)== EMPTY)
-            return 4;
-        else if(getStateAtCell(1, 2)== ZERO && getStateAtCell(3, 2)== ZERO && getStateAtCell(2, 2)== EMPTY)
-            return 5;
-        else if(getStateAtCell(1, 3)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(2, 3)== EMPTY)
-            return 6;
-
-        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 3)== EMPTY)
-            return 9;
-        else if(getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(1, 1)== EMPTY)
-            return 1;
-        else if(getStateAtCell(1, 1)== ZERO && getStateAtCell(3, 3)== ZERO && getStateAtCell(2, 2)== EMPTY)
-            return 5;
-
-        else if(getStateAtCell(1, 3)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 1)== EMPTY)
-            return 7;
-        else if(getStateAtCell(3, 1)== ZERO && getStateAtCell(2, 2)== ZERO && getStateAtCell(1, 3)== EMPTY)
-            return 3;
-        else if(getStateAtCell(3, 1)== ZERO && getStateAtCell(1, 3)== ZERO && getStateAtCell(2, 2)== EMPTY)
-            return 5;
-
-        else if(getStateAtCell(1, 1)== X && getStateAtCell(1, 2)== X && getStateAtCell(1, 3)== EMPTY)
-            return 3;
-        else if(getStateAtCell(2, 1)== X && getStateAtCell(2, 2)== X && getStateAtCell(2, 3)== EMPTY)
-            return 6;
-        else if(getStateAtCell(3, 1)== X && getStateAtCell(3, 2)== X && getStateAtCell(3, 3)== EMPTY)
-            return 9;
-
-        else if(getStateAtCell(1, 2)== X && getStateAtCell(1, 3)== X && getStateAtCell(1, 1)== EMPTY)
-            return 1;
-        else if(getStateAtCell(2, 2)== X && getStateAtCell(2, 3)== X && getStateAtCell(2, 1)== EMPTY)
-            return 4;
-        else if(getStateAtCell(3, 2)== X && getStateAtCell(3, 3)== X && getStateAtCell(3, 1)== EMPTY)
-            return 7;
-
-        else if(getStateAtCell(1, 1)== X && getStateAtCell(1, 3)== X && getStateAtCell(1, 2)== EMPTY)
-            return 2;
-        else if(getStateAtCell(2, 1)== X && getStateAtCell(2, 3)== X && getStateAtCell(2, 2)== EMPTY)
-            return 5;
-        else if(getStateAtCell(3, 1)== X && getStateAtCell(3, 3)== X && getStateAtCell(3, 2)== EMPTY)
-            return 8;
-
-        else if(getStateAtCell(1, 1)== X && getStateAtCell(2, 1)== X && getStateAtCell(3, 1)== EMPTY)
-            return 7;
-        else if(getStateAtCell(1, 2)== X && getStateAtCell(2, 2)== X && getStateAtCell(3, 2)== EMPTY)
-            return 8;
-        else if(getStateAtCell(1, 3)== X && getStateAtCell(2, 3)== X && getStateAtCell(3, 3)== EMPTY)
-            return 9;
-
-        else if(getStateAtCell(2, 1)== X && getStateAtCell(3, 1)== X && getStateAtCell(1, 1)== EMPTY)
-            return 1;
-        else if(getStateAtCell(2, 2)== X && getStateAtCell(3, 2)== X && getStateAtCell(1, 2)== EMPTY)
-            return 2;
-        else if(getStateAtCell(2, 3)== X && getStateAtCell(3, 3)== X && getStateAtCell(1, 3)== EMPTY)
-            return 3;
-
-        else if(getStateAtCell(1, 1)== X && getStateAtCell(3, 1)== X && getStateAtCell(2, 1)== EMPTY)
-            return 4;
-        else if(getStateAtCell(1, 2)== X && getStateAtCell(3, 2)== X && getStateAtCell(2, 2)== EMPTY)
-            return 5;
-        else if(getStateAtCell(1, 3)== X && getStateAtCell(3, 3)== X && getStateAtCell(2, 3)== EMPTY)
-            return 6;
-
-        else if(getStateAtCell(1, 1)== X && getStateAtCell(2, 2)== X && getStateAtCell(3, 3)== EMPTY)
-            return 9;
-        else if(getStateAtCell(2, 2)== X && getStateAtCell(3, 3)== X && getStateAtCell(1, 1)== EMPTY)
-            return 1;
-        else if(getStateAtCell(1, 1)== X && getStateAtCell(3, 3)== X && getStateAtCell(2, 2)== EMPTY)
-            return 5;
-
-        else if(getStateAtCell(1, 3)== X && getStateAtCell(2, 2)== X && getStateAtCell(3, 1)== EMPTY)
-            return 7;
-        else if(getStateAtCell(3, 1)== X && getStateAtCell(2, 2)== X && getStateAtCell(1, 3)== EMPTY)
-            return 3;
-        else if(getStateAtCell(3, 1)== X && getStateAtCell(1, 3)== X && getStateAtCell(2, 2)== EMPTY)
-            return 5;
-
-        else if(getStateAtCell(1, 1)== X && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 3)== X)
-            return 6;
-
-        else if(getStateAtCell(1, 3)== X && getStateAtCell(2, 2)== ZERO && getStateAtCell(3, 1)== X)
-            return 4;
-
-        else if(getStateAtCell(2, 2)== EMPTY)
-            return 5;
-
         else if(getStateAtCell(1, 1)== EMPTY)
             return 1;
         else
             return NOT_A_POSITION + 1;
     }
 
-    private boolean isWithTwoCellsZeroAndThirdCellEmpty(int[] winCombination) {
-        return availableCellForWinning(getStateAtPosition(winCombination[0] - 1),
-                getStateAtPosition(winCombination[1] - 1), getStateAtPosition(winCombination[2] - 1)) != NOT_A_POSITION;
-    }
+    private boolean isCombinationWith2SameCellsAndThirdEmpty(int[] winCombination, TableCharacter character) {
+        TableCharacter firstValue = getStateAtPosition(winCombination[0] - 1);
+        TableCharacter secondValue = getStateAtPosition(winCombination[1] - 1);
+        TableCharacter thirdValue = getStateAtPosition(winCombination[2] - 1);
 
-    // compare if two are equal and third is empty
-    private int availableCellForWinning(TableCharacter character, TableCharacter character1, TableCharacter character2) {
-//        if(character == EMPTY) {
-//            return character1 == ZERO && character2 == ZERO ?
-//        }
-//        return charactersAreZero;
-        return 0;
+        List<TableCharacter> array = Arrays.asList(firstValue, secondValue, thirdValue);
+        long emptyCharacters = array.stream().filter(tableCharacter -> tableCharacter == TableCharacter.EMPTY).count();
+        long zeroCharacters = array.stream().filter(tableCharacter -> tableCharacter == character).count();
+
+        return emptyCharacters == 1 && zeroCharacters == 2;
     }
 
 
