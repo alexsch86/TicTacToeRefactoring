@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static tictactoe.GameLogic.gameLogicInstance;
-import static tictactoe.model.Operation.*;
 
 public class MenuController implements ActionListener {
     
@@ -38,7 +37,7 @@ public class MenuController implements ActionListener {
                 ticTacToeFrame.displayLayoutOfBoard();
                 break;
             case SET_PLAYER_NAMES:
-                ticTacToeFrame.askUserForPlayerNames();
+                ticTacToeFrame.assignNewPlayerNamesFromInput();
                 break;
             case EXIT_MENU:
                 askAndExecuteExit();
@@ -52,7 +51,7 @@ public class MenuController implements ActionListener {
             case NEW_GAME:
             case SHOW_INSTRUCTIONS:
             case SHOW_ABOUT:
-                ticTacToeFrame.clearPanelSouth();
+                ticTacToeFrame.clearPanels();
                 ticTacToeFrame.setDefaultLayout();
 
                 addPanelToFrameBasedOnMenuItemOperation(operation);

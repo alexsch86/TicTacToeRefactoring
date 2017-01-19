@@ -23,8 +23,7 @@ public class TicTacToeGameController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton jButton = (JButton) e.getSource();
-        int positionOfButton = ticTacToeFrame.getPosition(jButton);
+        int positionOfButton = ticTacToeFrame.getPositionOfButtonPressed((JButton) e.getSource());
 
         if(gameLogic.isGameRunning())	{
             
