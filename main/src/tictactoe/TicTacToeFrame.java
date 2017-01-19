@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -21,27 +20,31 @@ import static tictactoe.model.Operation.*;
 import static tictactoe.util.Utils.isStringEmpty;
 
 public class TicTacToeFrame {
-    
-    final String VERSION = "3.0";
+
+    private static final String COLLISION_PLAYER_1_WITH_2 = "Player 1 name matches Player 2's\nDo you want to continue?";
+    private static final String COLLISION_PLAYER_2_WITH_1 = "Player 2 name matches Player 1's\nDo you want to continue?";
+    private static final String NAME_MATCH = "Name Match";
+
+    private final String VERSION = "3.0";
 
     //Setting up ALL the variables
-    JFrame window = new JFrame("Tic-Tac-Toe " + VERSION);
+    private JFrame window = new JFrame("Tic-Tac-Toe " + VERSION);
 
-    JMenuBar mnuMain = new JMenuBar();
-    JMenuItem mnuNewGame = new GameMenuItem(NEW_GAME),
+    private JMenuBar mnuMain = new JMenuBar();
+    private JMenuItem mnuNewGame = new GameMenuItem(NEW_GAME),
             mnuInstruction = new GameMenuItem(SHOW_INSTRUCTIONS),
             mnuExit = new GameMenuItem(EXIT_MENU),
             mnuAbout = new GameMenuItem(SHOW_ABOUT);
 
-    JButton btn1v1 = new GameButton(PLAY_HUMAN_VS_HUMAN),
+    private JButton btn1v1 = new GameButton(PLAY_HUMAN_VS_HUMAN),
             btn1vCPU = new GameButton(PLAY_HUMAN_VS_CPU),
             btnQuit = new GameButton(QUIT),
             btnSetName = new GameButton(SET_PLAYER_NAMES),
             btnContinue = new GameButton(CONTINUE_GAME),
             btnTryAgain = new GameButton(TRY_AGAIN);
-    JButton buttonsOfTableBoard[] = new JButton[NUMBER_OF_BUTTONS];
+    private JButton buttonsOfTableBoard[] = new JButton[NUMBER_OF_BUTTONS];
 
-    JPanel pnlNewGame = new JPanel(),
+    private JPanel pnlNewGame = new JPanel(),
             pnlMenu = new JPanel(),
             pnlMain = new JPanel(),
             pnlTop = new JPanel(),
@@ -49,13 +52,13 @@ public class TicTacToeFrame {
             pnlQuitNTryAgain = new JPanel(),
             pnlPlayingField = new JPanel();
 
-    JLabel lblTitle = new JLabel("Tic-Tac-Toe"),
+    private JLabel lblTitle = new JLabel("Tic-Tac-Toe"),
             lblTurn = new JLabel(),
             lblStatus = new JLabel("", JLabel.CENTER),
             lblMode = new JLabel("", JLabel.LEFT);
     JTextArea txtMessage = new JTextArea();
 
-    final int X = 535, Y = 342,
+    private final int X = 535, Y = 342,
             mainColorR = 190, mainColorG = 50, mainColorB = 50,
             btnColorR = 70, btnColorG = 70, btnColorB = 70;
     
@@ -64,24 +67,19 @@ public class TicTacToeFrame {
     private int winCounterPlayer1 = 0;
     private int winCounterPlayer2 = 0;
     
-    private String message,
-            player1Name = "Player 1", player2Name = "Player 2",
+    private String message, player1Name = "Player 1", player2Name = "Player 2",
             tempPlayer2 = "Player 2";
     
     TicTacToeFrame() {    
         setupGameFrame();
     }
 
-    //Setting game properties, ayout and sytle...
     private void setupGameFrame() {
-        //Setting window properties:
         window.setSize(X, Y);
         window.setLocation(350, 260);
-        //window.setResizable(false);
         window.setLayout(new BorderLayout());
         window.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        //Setting Menu, Main, Top, Bottom Panel Layout/Backgrounds
         pnlMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         pnlTop.setLayout(new FlowLayout(FlowLayout.CENTER));
         pnlBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -168,7 +166,7 @@ public class TicTacToeFrame {
         }
     }
 
-    public void displayLayoutOfBoard()	{	//	Shows the Playing Field
+    public void displayLayoutOfBoard()	{
         //	*IMPORTANT*- Does not start out brand new (meaning just shows what it had before)
         clearPanelSouth();
         pnlMain.setLayout(new BorderLayout());
@@ -189,7 +187,7 @@ public class TicTacToeFrame {
             buttonsOfTableBoard[i].setText("");
             buttonsOfTableBoard[i].setEnabled(true);
         }
-//        win = false;
+
         displayLayoutOfBoard();
         displayWinStatus();
     }
@@ -210,7 +208,7 @@ public class TicTacToeFrame {
             showMessageOnPopup("Invalid Name!");
         } else if(playerName.equals(player2Name))	{
             tempIsValid = JOptionPane.YES_OPTION ==
-                    askMessage("PlayerOrder 1 name matches PlayerOrder 2's\nDo you want to continue?", "Name Match", JOptionPane.YES_NO_OPTION);
+                    askMessage(COLLISION_PLAYER_1_WITH_2, NAME_MATCH, JOptionPane.YES_NO_OPTION);
         } else {
             tempIsValid = true;
         }
@@ -224,7 +222,7 @@ public class TicTacToeFrame {
             showMessageOnPopup("Invalid Name!");
         } else if(playerName.equals(player1Name))	{
             tempIsValid = JOptionPane.YES_OPTION ==
-                askMessage("PlayerOrder 2 name matches PlayerOrder 1's\nDo you want to continue?", "Name Match", JOptionPane.YES_NO_OPTION);
+                askMessage(COLLISION_PLAYER_2_WITH_1, "Name Match", JOptionPane.YES_NO_OPTION);
         } else	{
             tempIsValid = true;
         }
@@ -234,13 +232,12 @@ public class TicTacToeFrame {
         }
     }
 
-    //-----------------------------------------------------------------------------------------------------------------------------------
     public void setDefaultLayout()	{
         pnlMain.setLayout(new GridLayout(2, 1, 2, 5));
         pnlTop.setLayout(new FlowLayout(FlowLayout.CENTER));
         pnlBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------
+
     private void displayWinStatus()	{
         lblStatus.setText(player1Name + ": " + winCounterPlayer1 + " | " + player2Name + ": " + winCounterPlayer2);
     }
@@ -258,8 +255,6 @@ public class TicTacToeFrame {
     }
     
     public void clearPanelSouth()	{	//Removes all the possible panels
-        //that pnlMain, pnlTop, pnlBottom
-        //could have.
         pnlMain.remove(lblTitle);
         pnlMain.remove(pnlTop);
         pnlMain.remove(pnlBottom);
@@ -335,25 +330,9 @@ public class TicTacToeFrame {
         disableTableButtons();
     }
 
-    public boolean isNewGamePushed(Object source) {
-        return isMenuItemEqualToSource(mnuNewGame, source);
-    }
-    
     public Operation getOperation(Object source) {
         IOperation operation = (IOperation) source;
         return operation.getOperation();
-    }
-
-    public boolean isMenuInstructionPushed(Object source) {
-        return isMenuItemEqualToSource(mnuInstruction, source);
-    }
-
-    public boolean isMenuAboutPushed(Object source) {
-        return isMenuItemEqualToSource(mnuAbout, source);
-    }
-
-    private boolean isMenuItemEqualToSource(JMenuItem jMenuItem, Object source) {
-        return jMenuItem == source;
     }
 
     public void addNewGamePanelToTopPanel() {
@@ -396,26 +375,6 @@ public class TicTacToeFrame {
         pnlMain.setVisible(true);
     }
 
-    public boolean isGameHumanVsHuman(Object source) {
-        return source == btn1v1;
-    }
-
-    public boolean isGameHumanVersusComputer(Object source) {
-        return source == btn1vCPU;
-    }
-
-    public boolean isQuitButtonPushed(Object source) {
-        return source == btnQuit;
-    }
-
-    public boolean isTryAgainButtonPushed(Object source) {
-        return source == btnTryAgain;
-    }
-
-    public boolean isExitMenuPushed(Object source) {
-        return source == mnuExit;
-    }
-
     public void displayPlayerHasWon(PlayerOrder winningPlayer) {
         showMessageOnPopup(winningPlayer.getTableCharacter() + " has won");
     }
@@ -434,12 +393,5 @@ public class TicTacToeFrame {
         btnContinue.setEnabled(false);
     }
 
-    public boolean isContinueButtonPushed(Object source) {
-        return source == btnContinue;
-    }
-
-    public boolean isButtonSetNamesPushed(Object source) {
-        return source == btnSetName;
-    }
-//-------------------END OF ACTION PERFORMED METHOD-------------------------//
+    //-------------------END OF ACTION PERFORMED METHOD-------------------------//
 }

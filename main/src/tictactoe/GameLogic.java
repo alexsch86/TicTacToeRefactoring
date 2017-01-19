@@ -16,9 +16,7 @@ public class GameLogic {
 
     private BoardState boardState;
     private GameType gameType;
-    private Player player1;
-    private Player player2;
-    
+
     private boolean inGame;
     private boolean win;
     private int winningCombinationIndex;
