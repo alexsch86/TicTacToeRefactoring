@@ -74,7 +74,6 @@ public class GameLogic {
             } else {
                 boardState.setStateAtPosition(computerButton, TableCharacter.ZERO);
             }
-            // check win
             checkGameIsOver();
         }
     }

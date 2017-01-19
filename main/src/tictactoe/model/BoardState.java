@@ -59,11 +59,11 @@ public class BoardState {
     }
 
     public int getNextMoveForCPU()	{
-        return getNextCellPositionForCPU() - 1;
+        return getNextCellMoveForCPU() - 1;
     }
 
     // get next position or 0, if no more positions
-    private int getNextCellPositionForCPU() {
+    private int getNextCellMoveForCPU() {
         Optional<int[]> winningCombination = getCombinationWith2SameCellsAndThirdEmpty(TableCharacter.ZERO);
         if(winningCombination.isPresent()) {
             return getEmptyCellIndex(winningCombination);
