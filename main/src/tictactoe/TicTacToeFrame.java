@@ -75,40 +75,18 @@ public class TicTacToeFrame {
     }
 
     private void setupGameFrame() {
-        window.setSize(X, Y);
-        window.setLocation(350, 260);
-        window.setLayout(new BorderLayout());
-        window.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setupMainWindow();
 
-        pnlMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
-        pnlTop.setLayout(new FlowLayout(FlowLayout.CENTER));
-        pnlBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
+        setLayoutForPanels();
+        fillMenuBar();
 
-        pnlNewGame.setBackground(new Color(mainColorR - 50, mainColorG - 50, mainColorB - 50));
-        pnlMenu.setBackground(new Color((mainColorR - 50), (mainColorG - 50), (mainColorB - 50)));
-        pnlMain.setBackground(new Color(mainColorR, mainColorG, mainColorB));
-        pnlTop.setBackground(new Color(mainColorR, mainColorG, mainColorB));
-        pnlBottom.setBackground(new Color(mainColorR, mainColorG, mainColorB));
-
-        //Setting up Panel QuitNTryAgain
-        pnlQuitNTryAgain.setLayout(new GridLayout(1, 2, 2, 2));
         pnlQuitNTryAgain.add(btnTryAgain);
         pnlQuitNTryAgain.add(btnQuit);
-
-        //Adding menu items to menu bar
-        mnuMain.add(mnuNewGame);
-        mnuMain.add(mnuInstruction);
-        mnuMain.add(mnuAbout);
-        mnuMain.add(mnuExit);//	Menu Bar is Complete
-
-        //Adding buttons to NewGame panel
-        pnlNewGame.setLayout(new GridLayout(4, 1, 2, 10));
         pnlNewGame.add(btnContinue);
         pnlNewGame.add(btn1v1);
         pnlNewGame.add(btn1vCPU);
         pnlNewGame.add(btnSetName);
 
-        //Setting Button propertied
         btnTryAgain.setEnabled(false);
         btnContinue.setEnabled(false);
 
@@ -130,6 +108,34 @@ public class TicTacToeFrame {
         window.add(pnlMenu, BorderLayout.NORTH);
         window.add(pnlMain, BorderLayout.CENTER);
         window.setVisible(true);
+    }
+
+    private void fillMenuBar() {
+        mnuMain.add(mnuNewGame);
+        mnuMain.add(mnuInstruction);
+        mnuMain.add(mnuAbout);
+        mnuMain.add(mnuExit);
+    }
+
+    private void setLayoutForPanels() {
+        pnlMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
+        pnlTop.setLayout(new FlowLayout(FlowLayout.CENTER));
+        pnlBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
+        pnlQuitNTryAgain.setLayout(new GridLayout(1, 2, 2, 2));
+        pnlNewGame.setLayout(new GridLayout(4, 1, 2, 10));
+
+        pnlNewGame.setBackground(new Color(mainColorR - 50, mainColorG - 50, mainColorB - 50));
+        pnlMenu.setBackground(new Color((mainColorR - 50), (mainColorG - 50), (mainColorB - 50)));
+        pnlMain.setBackground(new Color(mainColorR, mainColorG, mainColorB));
+        pnlTop.setBackground(new Color(mainColorR, mainColorG, mainColorB));
+        pnlBottom.setBackground(new Color(mainColorR, mainColorG, mainColorB));
+    }
+
+    private void setupMainWindow() {
+        window.setSize(X, Y);
+        window.setLocation(350, 260);
+        window.setLayout(new BorderLayout());
+        window.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     private void setupGameMenu() {
