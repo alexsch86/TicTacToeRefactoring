@@ -27,48 +27,53 @@ public class TicTacToeFrame {
 
     private final String VERSION = "3.0";
 
-    //Setting up ALL the variables
     private JFrame window = new JFrame("Tic-Tac-Toe " + VERSION);
 
-    private JMenuBar mnuMain = new JMenuBar();
-    private JMenuItem mnuNewGame = new GameMenuItem(NEW_GAME),
-            mnuInstruction = new GameMenuItem(SHOW_INSTRUCTIONS),
-            mnuExit = new GameMenuItem(EXIT_MENU),
-            mnuAbout = new GameMenuItem(SHOW_ABOUT);
+    private JMenuBar menuMain = new JMenuBar();
+    private JMenuItem menuNewGame = new GameMenuItem(NEW_GAME);
+    private JMenuItem menuInstruction = new GameMenuItem(SHOW_INSTRUCTIONS);
+    private JMenuItem menuExit = new GameMenuItem(EXIT_MENU);
+    private JMenuItem menuAbout = new GameMenuItem(SHOW_ABOUT);
 
-    private JButton btn1v1 = new GameButton(PLAY_HUMAN_VS_HUMAN),
-            btn1vCPU = new GameButton(PLAY_HUMAN_VS_CPU),
-            btnQuit = new GameButton(QUIT),
-            btnSetName = new GameButton(SET_PLAYER_NAMES),
-            btnContinue = new GameButton(CONTINUE_GAME),
-            btnTryAgain = new GameButton(TRY_AGAIN);
-    private JButton buttonsOfTableBoard[] = new JButton[NUMBER_OF_BUTTONS];
+    private JButton buttonPlayHumanVsHuman = new GameButton(PLAY_HUMAN_VS_HUMAN);
+    private JButton buttonPlayHumanVsCPU = new GameButton(PLAY_HUMAN_VS_CPU);
+    private JButton buttonQuit = new GameButton(QUIT);
+    private JButton buttonSetPlayerNames = new GameButton(SET_PLAYER_NAMES);
+    private JButton buttonContinueGame = new GameButton(CONTINUE_GAME);
+    private JButton buttonTryAgain = new GameButton(TRY_AGAIN);
 
-    private JPanel pnlNewGame = new JPanel(),
-            pnlMenu = new JPanel(),
-            pnlMain = new JPanel(),
-            pnlTop = new JPanel(),
-            pnlBottom = new JPanel(),
-            pnlQuitNTryAgain = new JPanel(),
-            pnlPlayingField = new JPanel();
+    private JButton buttonsOfGameBoard[] = new JButton[NUMBER_OF_BUTTONS];
 
-    private JLabel lblTitle = new JLabel("Tic-Tac-Toe"),
-            lblTurn = new JLabel(),
-            lblStatus = new JLabel("", JLabel.CENTER),
-            lblMode = new JLabel("", JLabel.LEFT);
-    JTextArea txtMessage = new JTextArea();
+    private JPanel panelStartNewGame = new JPanel();
+    private JPanel panelMenuBar = new JPanel();
+    private JPanel panelMain = new JPanel();
+    private JPanel panelTop = new JPanel();
+    private JPanel panelBottom = new JPanel();
+    private JPanel panelTryAgain = new JPanel();
+    private JPanel panelGameBoard = new JPanel();
 
-    private final int X = 535, Y = 342,
-            mainColorR = 190, mainColorG = 50, mainColorB = 50,
-            btnColorR = 70, btnColorG = 70, btnColorB = 70;
+    private JLabel labelTitle = new JLabel("Tic-Tac-Toe");
+    private JLabel labelTurn = new JLabel();
+    private JLabel labelStatus = new JLabel("", JLabel.CENTER);
+    private JLabel labelModel = new JLabel("", JLabel.LEFT);
+    private JTextArea textMessage = new JTextArea();
+
+    private final int mainColorR = 190;
+    private final int mainColorG = 50;
+    private final int mainColorB = 50;
+    private final int btnColorR = 70;
+    private final int btnColorG = 70;
+    private final int btnColorB = 70;
     
     private Color clrBtnWonColor = new Color(190, 190, 190);
     
     private int winCounterPlayer1 = 0;
     private int winCounterPlayer2 = 0;
     
-    private String message, player1Name = "Player 1", player2Name = "Player 2",
-            tempPlayer2 = "Player 2";
+    private String message;
+    private String player1Name = "Player 1";
+    private String player2Name = "Player 2";
+    private String tempPlayer2 = "Player 2";
     
     TicTacToeFrame() {    
         setupGameFrame();
@@ -80,118 +85,120 @@ public class TicTacToeFrame {
         setLayoutForPanels();
         fillMenuBar();
 
-        pnlQuitNTryAgain.add(btnTryAgain);
-        pnlQuitNTryAgain.add(btnQuit);
-        pnlNewGame.add(btnContinue);
-        pnlNewGame.add(btn1v1);
-        pnlNewGame.add(btn1vCPU);
-        pnlNewGame.add(btnSetName);
+        panelTryAgain.add(buttonTryAgain);
+        panelTryAgain.add(buttonQuit);
+        panelStartNewGame.add(buttonContinueGame);
+        panelStartNewGame.add(buttonPlayHumanVsHuman);
+        panelStartNewGame.add(buttonPlayHumanVsCPU);
+        panelStartNewGame.add(buttonSetPlayerNames);
 
-        btnTryAgain.setEnabled(false);
-        btnContinue.setEnabled(false);
+        buttonTryAgain.setEnabled(false);
+        buttonContinueGame.setEnabled(false);
 
-        //Setting txtMessage Properties
-        txtMessage.setBackground(new Color(mainColorR - 30, mainColorG - 30, mainColorB - 30));
-        txtMessage.setForeground(Color.white);
-        txtMessage.setEditable(false);
+        //Setting textMessage Properties
+        textMessage.setBackground(new Color(mainColorR - 30, mainColorG - 30, mainColorB - 30));
+        textMessage.setForeground(Color.white);
+        textMessage.setEditable(false);
 
-        setupGameMenu();
+        addListeners();
         setupGameBoard();
 
-        //Adding everything needed to pnlMenu and pnlMain
-        lblMode.setForeground(Color.white);
-        pnlMenu.add(lblMode);
-        pnlMenu.add(mnuMain);
-        pnlMain.add(lblTitle);
+        //Adding everything needed to panelMenuBar and panelMain
+        labelModel.setForeground(Color.white);
+        panelMenuBar.add(labelModel);
+        panelMenuBar.add(menuMain);
+        panelMain.add(labelTitle);
 
         //Adding to window and Showing window
-        window.add(pnlMenu, BorderLayout.NORTH);
-        window.add(pnlMain, BorderLayout.CENTER);
+        window.add(panelMenuBar, BorderLayout.NORTH);
+        window.add(panelMain, BorderLayout.CENTER);
         window.setVisible(true);
     }
 
     private void fillMenuBar() {
-        mnuMain.add(mnuNewGame);
-        mnuMain.add(mnuInstruction);
-        mnuMain.add(mnuAbout);
-        mnuMain.add(mnuExit);
+        menuMain.add(menuNewGame);
+        menuMain.add(menuInstruction);
+        menuMain.add(menuAbout);
+        menuMain.add(menuExit);
     }
 
     private void setLayoutForPanels() {
-        pnlMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
-        pnlTop.setLayout(new FlowLayout(FlowLayout.CENTER));
-        pnlBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
-        pnlQuitNTryAgain.setLayout(new GridLayout(1, 2, 2, 2));
-        pnlNewGame.setLayout(new GridLayout(4, 1, 2, 10));
+        panelMenuBar.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelTop.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelTryAgain.setLayout(new GridLayout(1, 2, 2, 2));
+        panelStartNewGame.setLayout(new GridLayout(4, 1, 2, 10));
 
-        pnlNewGame.setBackground(new Color(mainColorR - 50, mainColorG - 50, mainColorB - 50));
-        pnlMenu.setBackground(new Color((mainColorR - 50), (mainColorG - 50), (mainColorB - 50)));
-        pnlMain.setBackground(new Color(mainColorR, mainColorG, mainColorB));
-        pnlTop.setBackground(new Color(mainColorR, mainColorG, mainColorB));
-        pnlBottom.setBackground(new Color(mainColorR, mainColorG, mainColorB));
+        panelStartNewGame.setBackground(new Color(mainColorR - 50, mainColorG - 50, mainColorB - 50));
+        panelMenuBar.setBackground(new Color((mainColorR - 50), (mainColorG - 50), (mainColorB - 50)));
+        panelMain.setBackground(new Color(mainColorR, mainColorG, mainColorB));
+        panelTop.setBackground(new Color(mainColorR, mainColorG, mainColorB));
+        panelBottom.setBackground(new Color(mainColorR, mainColorG, mainColorB));
     }
 
     private void setupMainWindow() {
-        window.setSize(X, Y);
+        int x = 535;
+        int y = 342;
+        window.setSize(x, y);
         window.setLocation(350, 260);
         window.setLayout(new BorderLayout());
         window.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    private void setupGameMenu() {
+    private void addListeners() {
         //Adding Action Listener to all the Buttons and Menu Items
         ActionListener menuListener = new MenuController(this);
 
-        mnuNewGame.addActionListener(menuListener);
-        mnuExit.addActionListener(menuListener);
-        mnuInstruction.addActionListener(menuListener);
-        mnuAbout.addActionListener(menuListener);
-        btn1v1.addActionListener(menuListener);
-        btn1vCPU.addActionListener(menuListener);
-        btnQuit.addActionListener(menuListener);
-        btnSetName.addActionListener(menuListener);
-        btnContinue.addActionListener(menuListener);
-        btnTryAgain.addActionListener(menuListener);
+        menuNewGame.addActionListener(menuListener);
+        menuExit.addActionListener(menuListener);
+        menuInstruction.addActionListener(menuListener);
+        menuAbout.addActionListener(menuListener);
+        buttonPlayHumanVsHuman.addActionListener(menuListener);
+        buttonPlayHumanVsCPU.addActionListener(menuListener);
+        buttonQuit.addActionListener(menuListener);
+        buttonSetPlayerNames.addActionListener(menuListener);
+        buttonContinueGame.addActionListener(menuListener);
+        buttonTryAgain.addActionListener(menuListener);
     }
 
     public int getPosition(JButton jButton) {
-        return Arrays.asList(buttonsOfTableBoard).indexOf(jButton);
+        return Arrays.asList(buttonsOfGameBoard).indexOf(jButton);
     }
     
     private void setupGameBoard() {
         ActionListener gameBoardListener = new TicTacToeGameController(this);
 
-        pnlPlayingField.setLayout(new GridLayout(3, 3, 2, 2));
-        pnlPlayingField.setBackground(Color.black);
+        panelGameBoard.setLayout(new GridLayout(3, 3, 2, 2));
+        panelGameBoard.setBackground(Color.black);
 
         for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-            buttonsOfTableBoard[i] = new JButton();
-            buttonsOfTableBoard[i].setBackground(new Color(btnColorR, btnColorG, btnColorB));
-            buttonsOfTableBoard[i].addActionListener(gameBoardListener);
-            pnlPlayingField.add(buttonsOfTableBoard[i]);//	Playing Field is Compelte
+            buttonsOfGameBoard[i] = new JButton();
+            buttonsOfGameBoard[i].setBackground(new Color(btnColorR, btnColorG, btnColorB));
+            buttonsOfGameBoard[i].addActionListener(gameBoardListener);
+            panelGameBoard.add(buttonsOfGameBoard[i]);//	Playing Field is Compelte
         }
     }
 
     public void displayLayoutOfBoard()	{
         //	*IMPORTANT*- Does not start out brand new (meaning just shows what it had before)
         clearPanelSouth();
-        pnlMain.setLayout(new BorderLayout());
-        pnlTop.setLayout(new BorderLayout());
-        pnlBottom.setLayout(new BorderLayout());
-        pnlTop.add(pnlPlayingField);
-        pnlBottom.add(lblTurn, BorderLayout.WEST);
-        pnlBottom.add(lblStatus, BorderLayout.CENTER);
-        pnlBottom.add(pnlQuitNTryAgain, BorderLayout.EAST);
-        pnlMain.add(pnlTop, BorderLayout.CENTER);
-        pnlMain.add(pnlBottom, BorderLayout.SOUTH);
-        pnlPlayingField.requestFocus();
+        panelMain.setLayout(new BorderLayout());
+        panelTop.setLayout(new BorderLayout());
+        panelBottom.setLayout(new BorderLayout());
+        panelTop.add(panelGameBoard);
+        panelBottom.add(labelTurn, BorderLayout.WEST);
+        panelBottom.add(labelStatus, BorderLayout.CENTER);
+        panelBottom.add(panelTryAgain, BorderLayout.EAST);
+        panelMain.add(panelTop, BorderLayout.CENTER);
+        panelMain.add(panelBottom, BorderLayout.SOUTH);
+        panelGameBoard.requestFocus();
     }
     
     private void resetBoard()	{	//	Sets all the game required variables to default
         for(int i = 0; i < NUMBER_OF_BUTTONS; i++)	{
-            buttonsOfTableBoard[i].setBackground(new Color(btnColorR, btnColorG, btnColorB));
-            buttonsOfTableBoard[i].setText("");
-            buttonsOfTableBoard[i].setEnabled(true);
+            buttonsOfGameBoard[i].setBackground(new Color(btnColorR, btnColorG, btnColorB));
+            buttonsOfGameBoard[i].setText("");
+            buttonsOfGameBoard[i].setEnabled(true);
         }
 
         displayLayoutOfBoard();
@@ -199,12 +206,12 @@ public class TicTacToeFrame {
     }
     
     public void quit()	{
-        lblMode.setText("");
-        btnContinue.setEnabled(false);
+        labelModel.setText("");
+        buttonContinueGame.setEnabled(false);
         clearPanelSouth();
         setDefaultLayout();
-        pnlTop.add(pnlNewGame);
-        pnlMain.add(pnlTop);
+        panelTop.add(panelStartNewGame);
+        panelMain.add(panelTop);
     }
     
     public void askUserForPlayerNames()	{
@@ -239,13 +246,13 @@ public class TicTacToeFrame {
     }
 
     public void setDefaultLayout()	{
-        pnlMain.setLayout(new GridLayout(2, 1, 2, 5));
-        pnlTop.setLayout(new FlowLayout(FlowLayout.CENTER));
-        pnlBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelMain.setLayout(new GridLayout(2, 1, 2, 5));
+        panelTop.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
     }
 
     private void displayWinStatus()	{
-        lblStatus.setText(player1Name + ": " + winCounterPlayer1 + " | " + player2Name + ": " + winCounterPlayer2);
+        labelStatus.setText(player1Name + ": " + winCounterPlayer1 + " | " + player2Name + ": " + winCounterPlayer2);
     }
     
     public int askMessage(String msg, String tle, int op)	{
@@ -261,26 +268,26 @@ public class TicTacToeFrame {
     }
     
     public void clearPanelSouth()	{	//Removes all the possible panels
-        pnlMain.remove(lblTitle);
-        pnlMain.remove(pnlTop);
-        pnlMain.remove(pnlBottom);
-        pnlTop.remove(pnlNewGame);
-        pnlTop.remove(txtMessage);
-        pnlTop.remove(pnlPlayingField);
-        pnlBottom.remove(lblTurn);
-        pnlBottom.remove(pnlQuitNTryAgain);
+        panelMain.remove(labelTitle);
+        panelMain.remove(panelTop);
+        panelMain.remove(panelBottom);
+        panelTop.remove(panelStartNewGame);
+        panelTop.remove(textMessage);
+        panelTop.remove(panelGameBoard);
+        panelBottom.remove(labelTurn);
+        panelBottom.remove(panelTryAgain);
     }
     
     public void startNewGame(GameType gameType) {
-        btnContinue.setEnabled(true);
-        btnTryAgain.setEnabled(false);
+        buttonContinueGame.setEnabled(true);
+        buttonTryAgain.setEnabled(false);
         
         if(gameType == PLAYER_VS_PLAYER)	{
             player2Name = tempPlayer2;
-            lblMode.setText(gameType.name());
+            labelModel.setText(gameType.name());
         } else	{
             player2Name = "Computer";
-            lblMode.setText(gameType.name());
+            labelModel.setText(gameType.name());
         }
         
         winCounterPlayer1 = 0;
@@ -290,7 +297,7 @@ public class TicTacToeFrame {
     }
 
     public GameType getTypeOfGame(Object source) {
-        if(source == btn1v1) {
+        if(source == buttonPlayHumanVsHuman) {
             return PLAYER_VS_PLAYER;
         } else {
             return PLAYER_VS_CPU;
@@ -309,19 +316,19 @@ public class TicTacToeFrame {
 
     public void refreshTableBoard(BoardState boardState) {
         refreshButtonsText(boardState);
-        for(JButton jButton : buttonsOfTableBoard) {
+        for(JButton jButton : buttonsOfGameBoard) {
             jButton.setEnabled(jButton.getText().equals(""));
         }
     }
     
     private void disableTableButtons() {
-        for(JButton jButton : buttonsOfTableBoard) {
+        for(JButton jButton : buttonsOfGameBoard) {
             jButton.setEnabled(false);
         }
     }
 
     private void refreshButtonsText(BoardState boardState) {
-        List<JButton> buttons = asList(buttonsOfTableBoard);
+        List<JButton> buttons = asList(buttonsOfGameBoard);
         for(ListIterator<JButton> iterator = buttons.listIterator(); iterator.hasNext(); ) {
             int position = iterator.nextIndex();
             iterator.next().setText(boardState.getStateAtPosition(position).getCharacter());
@@ -329,9 +336,9 @@ public class TicTacToeFrame {
     }
 
     public void markWinningPositionAndEnd(int[] winningCombination) {
-        buttonsOfTableBoard[winningCombination[0]].setBackground(clrBtnWonColor);
-        buttonsOfTableBoard[winningCombination[1]].setBackground(clrBtnWonColor);
-        buttonsOfTableBoard[winningCombination[2]].setBackground(clrBtnWonColor);
+        buttonsOfGameBoard[winningCombination[0]].setBackground(clrBtnWonColor);
+        buttonsOfGameBoard[winningCombination[1]].setBackground(clrBtnWonColor);
+        buttonsOfGameBoard[winningCombination[2]].setBackground(clrBtnWonColor);
         
         disableTableButtons();
     }
@@ -342,7 +349,7 @@ public class TicTacToeFrame {
     }
 
     public void addNewGamePanelToTopPanel() {
-        pnlTop.add(pnlNewGame);
+        panelTop.add(panelStartNewGame);
     }
 
     public void displayInstructionPopup() {
@@ -365,20 +372,20 @@ public class TicTacToeFrame {
     }
 
     private void setTextMessageAndShowOnPanelTop() {
-        txtMessage.setText(message);
-        pnlTop.add(txtMessage);
+        textMessage.setText(message);
+        panelTop.add(textMessage);
     }
 
     public void addTopPanelToMainPanel() {
-        pnlMain.add(pnlTop);
+        panelMain.add(panelTop);
     }
 
     /**
      * see setVisible in Swing
      */
     public void resetMainPanelVisibility() {
-        pnlMain.setVisible(false);
-        pnlMain.setVisible(true);
+        panelMain.setVisible(false);
+        panelMain.setVisible(true);
     }
 
     public void displayPlayerHasWon(PlayerOrder winningPlayer) {
@@ -391,12 +398,12 @@ public class TicTacToeFrame {
 
     public void displayPlayerTurn(PlayerOrder player) {
         String whoTurn = player.getTableCharacter().getCharacter();
-        lblTurn.setText("Turn: " + whoTurn);
+        labelTurn.setText("Turn: " + whoTurn);
     }
 
     public void resetTryAgainAndContinue() {
-        btnTryAgain.setEnabled(true);
-        btnContinue.setEnabled(false);
+        buttonTryAgain.setEnabled(true);
+        buttonContinueGame.setEnabled(false);
     }
 
     //-------------------END OF ACTION PERFORMED METHOD-------------------------//
