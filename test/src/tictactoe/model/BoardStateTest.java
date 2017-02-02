@@ -33,15 +33,6 @@ public class BoardStateTest  {
     }
 
     @Test
-    public void getStateAtCell_getsStateForConfiguration() {
-        boardState.setStateAtPosition(3, X);
-
-        TableCharacter actual = boardState.getStateAtCell(2, 1);
-
-        assertThat(actual).isEqualTo(X);
-    }
-
-    @Test
     public void doNextMoveForCPU_CPUCanWinRow1Cell3_CPUWins() throws Exception {
         boardState.setStateAtPosition(0, ZERO);
         boardState.setStateAtPosition(1, ZERO);

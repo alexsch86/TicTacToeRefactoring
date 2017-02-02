@@ -1,4 +1,4 @@
-package tictactoe;
+package tictactoe.view;
 
 import tictactoe.listeners.MenuController;
 import tictactoe.listeners.TicTacToeGameController;
@@ -12,13 +12,14 @@ import java.util.ListIterator;
 
 import static java.util.Arrays.asList;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import static tictactoe.GameLogic.NUMBER_OF_BUTTONS;
 import static tictactoe.model.GameType.PLAYER_VS_CPU;
 import static tictactoe.model.GameType.PLAYER_VS_PLAYER;
 import static tictactoe.model.Operation.*;
 import static tictactoe.util.Utils.isStringEmpty;
 
 public class TicTacToeFrame {
+
+    private static final int NUMBER_OF_BUTTONS = 9;
 
     private static final String COLLISION_PLAYER_NAMES = "This player name matches the other player name\nDo you want to continue?";
     private static final String NAME_MATCH = "Name Match";
@@ -69,7 +70,7 @@ public class TicTacToeFrame {
     private String player1Name = "Player 1";
     private String player2Name = "Player 2";
 
-    TicTacToeFrame() {    
+    public TicTacToeFrame() {
         setupGameFrame();
     }
 
@@ -306,18 +307,18 @@ public class TicTacToeFrame {
         return option == JOptionPane.YES_OPTION;
     }
 
-    public void refreshTableBoard(BoardState boardState) {
-        refreshButtonsText(boardState);
+    public void refreshTableBoard(TableCharacter[] tableCharacters) {
+        refreshButtonsText(tableCharacters);
         for(JButton jButton : buttonsOfGameBoard) {
             jButton.setEnabled(areEqual(jButton.getText(), ""));
         }
     }
     
-    private void refreshButtonsText(BoardState boardState) {
+    private void refreshButtonsText(TableCharacter[] tableCharacters) {
         List<JButton> buttons = asList(buttonsOfGameBoard);
         for(ListIterator<JButton> iterator = buttons.listIterator(); iterator.hasNext(); ) {
             int position = iterator.nextIndex();
-            iterator.next().setText(boardState.getStateAtPosition(position).getCharacter());
+            iterator.next().setText(tableCharacters[position].getCharacter());
         }
     }
 

@@ -1,14 +1,10 @@
-package tictactoe;
-
-import tictactoe.model.*;
+package tictactoe.model;
 
 import static tictactoe.model.GameType.PLAYER_VS_CPU;
 import static tictactoe.model.PlayerOrder.FIRST;
 import static tictactoe.model.PlayerOrder.SECOND;
 
 public class GameLogic {
-    
-    static final int NUMBER_OF_BUTTONS = 9;
     
     private static final int NOT_A_WINING_COMBINATION = -1;
     private static final int NOT_A_POSITION = -1;
@@ -48,10 +44,6 @@ public class GameLogic {
         this.inGame = inGame;
     }
 
-    public BoardState getBoardState() {
-        return boardState;
-    }
-
     public boolean isGameRunning() {
         return turn < 10;
     }
@@ -83,7 +75,7 @@ public class GameLogic {
     }
 
     public int[] getWinningCombination() {
-        return boardState.getWinCombination0BasedIndexes(winningCombinationIndex);
+        return boardState.getWinningCombinations(winningCombinationIndex);
     }
 
     public void checkGameIsOver()	{	
@@ -146,5 +138,13 @@ public class GameLogic {
 
     public PlayerOrder getPreviousPlayer() {
         return isPlayerXTurn() ? SECOND : FIRST;
+    }
+
+    public void setBoardState(int positionOfButton, TableCharacter x) {
+        this.boardState.setStateAtPosition(positionOfButton, x);
+    }
+
+    public TableCharacter[] getTableCharacters() {
+        return boardState.getTableCharacters();
     }
 }

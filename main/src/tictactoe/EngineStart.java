@@ -1,5 +1,7 @@
 package tictactoe;
 
+import tictactoe.view.TicTacToeFrame;
+
 public class EngineStart {
 
 

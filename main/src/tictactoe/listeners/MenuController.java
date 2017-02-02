@@ -1,14 +1,14 @@
 package tictactoe.listeners;
 
-import tictactoe.GameLogic;
-import tictactoe.TicTacToeFrame;
+import tictactoe.model.GameLogic;
+import tictactoe.view.TicTacToeFrame;
 import tictactoe.model.Operation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static tictactoe.GameLogic.gameLogicInstance;
+import static tictactoe.model.GameLogic.gameLogicInstance;
 
 public class MenuController implements ActionListener {
     

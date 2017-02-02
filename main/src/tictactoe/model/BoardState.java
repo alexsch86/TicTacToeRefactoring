@@ -9,19 +9,19 @@ import static tictactoe.model.TableCharacter.EMPTY;
 /**
  * Created by alexands on 16.06.2016.
  */
-public class BoardState {
+class BoardState {
 
     static final int NOT_A_POSITION = -1;
 
     private final int winningCombinations[][] = new int[][]{
-            {1, 2, 3}, {1, 4, 7}, {1, 5, 9},
-            {4, 5, 6}, {2, 5, 8}, {3, 5, 7},
-            {7, 8, 9}, {3, 6, 9}
+            {0, 1, 2}, {0, 3, 6}, {0, 4, 8},
+            {3, 4, 5}, {1, 4, 7}, {2, 4, 6},
+            {6, 7, 8}, {2, 5, 8}
     };
     
     private final TableCharacter[] STATE;
 
-    public BoardState() {
+    BoardState() {
         STATE = initializeBoard();
     }
 
@@ -29,41 +29,30 @@ public class BoardState {
         return new TableCharacter[] {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
     }
 
-    /**
-     * 
-     * @param line non-0 index based
-     * @param column non-0 index based
-     * @return  state of the cell
-     */
-    public TableCharacter getStateAtCell(int line, int column) {
-        int arrayPosition = (line - 1) * 3 + column - 1;
-        return STATE[arrayPosition];
+    TableCharacter[] getTableCharacters() {
+        return STATE;
     }
 
-    public void setStateAtPosition(int zeroBasedPosition, TableCharacter tableCharacter) {
+    void setStateAtPosition(int zeroBasedPosition, TableCharacter tableCharacter) {
         this.STATE[zeroBasedPosition] = tableCharacter;
     }
 
-    public TableCharacter getStateAtPosition(int position) {
+    TableCharacter getStateAtPosition(int position) {
         return STATE[position];
     }
 
-    public boolean isWinningCombination(int winningCombinationIndex) {
-        return getStateAtPosition(winningCombinations[winningCombinationIndex][0] - 1) != TableCharacter.EMPTY &&
-                getStateAtPosition(winningCombinations[winningCombinationIndex][0] - 1) == getStateAtPosition(winningCombinations[winningCombinationIndex][1] - 1) &&
-                getStateAtPosition(winningCombinations[winningCombinationIndex][1] - 1) == getStateAtPosition(winningCombinations[winningCombinationIndex][2] - 1);
+    boolean isWinningCombination(int winningCombinationIndex) {
+        return getStateAtPosition(winningCombinations[winningCombinationIndex][0]) != TableCharacter.EMPTY &&
+                getStateAtPosition(winningCombinations[winningCombinationIndex][0]) == getStateAtPosition(winningCombinations[winningCombinationIndex][1]) &&
+                getStateAtPosition(winningCombinations[winningCombinationIndex][1]) == getStateAtPosition(winningCombinations[winningCombinationIndex][2]);
     }
 
-    public int[] getWinCombination0BasedIndexes(int winningCombinationIndex) {
-        return Arrays.stream(winningCombinations[winningCombinationIndex]).map(index -> index - 1).toArray();
-    }
-
-    public int getNextMoveForCPU()	{
-        return getNextCellMoveForCPU() - 1;
+    int[] getWinningCombinations(int winningCombinationIndex) {
+        return winningCombinations[winningCombinationIndex];
     }
 
     // get next position or 0, if no more positions
-    private int getNextCellMoveForCPU() {
+    int getNextMoveForCPU() {
         Optional<int[]> winningCombination = getCombinationWith2SameCellsAndThirdEmpty(TableCharacter.ZERO);
         if(winningCombination.isPresent()) {
             return getEmptyCellIndex(winningCombination);
@@ -74,12 +63,12 @@ public class BoardState {
             return getEmptyCellIndex(blockingCombination);
         }
 
-        return nextMove();
+        return nextPredefinedMoveWhenNoOpportunityExists();
     }
 
     private int getEmptyCellIndex(Optional<int[]> winningCombination) {
         return Arrays.stream(winningCombination.get())
-                .filter(index -> getStateAtPosition(index - 1) == TableCharacter.EMPTY)
+                .filter(index -> getStateAtPosition(index) == TableCharacter.EMPTY)
                 .findFirst()
                 .getAsInt();
     }
@@ -90,19 +79,20 @@ public class BoardState {
                 .findFirst();
     }
 
-    private int nextMove() {
-        if(getStateAtCell(2, 2)== EMPTY)
+    private int nextPredefinedMoveWhenNoOpportunityExists() {
+        if(getStateAtPosition(4) == EMPTY) {
             return 5;
-        else if(getStateAtCell(1, 1)== EMPTY)
+        } else if(getStateAtPosition(0) == EMPTY) {
             return 1;
-        else
-            return NOT_A_POSITION + 1;
+        }
+
+        return NOT_A_POSITION;
     }
 
     private boolean isCombinationWith2SameCellsAndThirdEmpty(int[] winCombination, TableCharacter character) {
-        TableCharacter firstValue = getStateAtPosition(winCombination[0] - 1);
-        TableCharacter secondValue = getStateAtPosition(winCombination[1] - 1);
-        TableCharacter thirdValue = getStateAtPosition(winCombination[2] - 1);
+        TableCharacter firstValue = getStateAtPosition(winCombination[0]);
+        TableCharacter secondValue = getStateAtPosition(winCombination[1]);
+        TableCharacter thirdValue = getStateAtPosition(winCombination[2]);
 
         List<TableCharacter> array = Arrays.asList(firstValue, secondValue, thirdValue);
         long emptyCharacters = array.stream().filter(tableCharacter -> tableCharacter == TableCharacter.EMPTY).count();
@@ -110,6 +100,4 @@ public class BoardState {
 
         return emptyCharacters == 1 && zeroCharacters == 2;
     }
-
-
 }
