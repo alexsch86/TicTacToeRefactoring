@@ -15,6 +15,7 @@ import static tictactoe.model.GameType.PLAYER_VS_CPU;
 import static tictactoe.model.GameType.PLAYER_VS_PLAYER;
 import static tictactoe.model.Operation.*;
 import static tictactoe.util.Utils.isStringEmpty;
+import static tictactoe.util.Utils.isStringNull;
 
 public class TicTacToeFrame extends JFrame {
 
@@ -231,7 +232,7 @@ public class TicTacToeFrame extends JFrame {
     }
 
     private boolean areEqual(String text1, String text2) {
-        return !isStringEmpty(text1) && text1.equals(text2);
+        return !isStringNull(text1) && text1.equals(text2);
     }
 
     private boolean isCollisionOfNamesAcceptable() {
@@ -309,10 +310,14 @@ public class TicTacToeFrame extends JFrame {
     public void refreshTableBoard(TableCharacter[] tableCharacters) {
         refreshButtonsText(tableCharacters);
         for(JButton jButton : buttonsOfGameBoard) {
-            jButton.setEnabled(areEqual(jButton.getText(), ""));
+            jButton.setEnabled(isTableButtonEmpty(jButton));
         }
     }
-    
+
+    private boolean isTableButtonEmpty(JButton jButton) {
+        return areEqual(jButton.getText(), "");
+    }
+
     private void refreshButtonsText(TableCharacter[] tableCharacters) {
         List<JButton> buttons = asList(buttonsOfGameBoard);
         for(ListIterator<JButton> iterator = buttons.listIterator(); iterator.hasNext(); ) {
