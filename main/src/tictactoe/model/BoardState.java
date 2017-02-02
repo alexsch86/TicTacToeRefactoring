@@ -81,9 +81,9 @@ class BoardState {
 
     private int nextPredefinedMoveWhenNoOpportunityExists() {
         if(getStateAtPosition(4) == EMPTY) {
-            return 5;
+            return 4;
         } else if(getStateAtPosition(0) == EMPTY) {
-            return 1;
+            return 0;
         }
 
         return NOT_A_POSITION;
