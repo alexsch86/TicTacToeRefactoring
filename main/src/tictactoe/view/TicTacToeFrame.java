@@ -11,22 +11,19 @@ import java.util.List;
 import java.util.ListIterator;
 
 import static java.util.Arrays.asList;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static tictactoe.model.GameType.PLAYER_VS_CPU;
 import static tictactoe.model.GameType.PLAYER_VS_PLAYER;
 import static tictactoe.model.Operation.*;
 import static tictactoe.util.Utils.isStringEmpty;
 
-public class TicTacToeFrame {
+public class TicTacToeFrame extends JFrame {
 
     private static final int NUMBER_OF_BUTTONS = 9;
 
     private static final String COLLISION_PLAYER_NAMES = "This player name matches the other player name\nDo you want to continue?";
     private static final String NAME_MATCH = "Name Match";
 
-    private final String VERSION = "3.0";
-
-    private JFrame window = new JFrame("Tic-Tac-Toe " + VERSION);
+    private final String VERSION = "4.0";
 
     private JMenuBar menuMain = new JMenuBar();
     private JMenuItem menuNewGame = new GameMenuItem(NEW_GAME);
@@ -104,7 +101,6 @@ public class TicTacToeFrame {
     }
 
     private void setupGameFrame() {
-        setupMainWindow();
         setPanels();
         fillMenuBar();
         setupComponents();
@@ -112,17 +108,20 @@ public class TicTacToeFrame {
         addComponentsToPanels();
         addListeners();
         setupGameBoard();
+
+        setupMainWindow();
     }
 
     private void setupMainWindow() {
-        window.setSize(535, 342);
-        window.setLocation(350, 260);
-        window.setLayout(new BorderLayout());
-        window.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setTitle("Tic-Tac-Toe " + VERSION);
+        this.setSize(535, 342);
+        this.setLocation(350, 260);
+        this.setLayout(new BorderLayout());
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        window.add(panelMenuBar, BorderLayout.NORTH);
-        window.add(panelMain, BorderLayout.CENTER);
-        window.setVisible(true);
+        this.add(panelMenuBar, BorderLayout.NORTH);
+        this.add(panelMain, BorderLayout.CENTER);
+        this.setVisible(true);
     }
 
     private void setPanels() {
